@@ -22,6 +22,7 @@ import {
   MenuRounded,
   Dashboard,
 } from "@mui/icons-material";
+import HomeIcon from "@mui/icons-material/Home";
 import {
   CanAccess,
   ITreeMenu,
@@ -115,9 +116,10 @@ export const Sider: typeof DefaultSider = ({ render }) => {
                     justifyContent: "center",
                     "&.Mui-selected": {
                       "&:hover": {
-                        backgroundColor: "#4CAF50",
+                        backgroundColor: "#2ECC71",
+                        opacity: 0.9,
                       },
-                      backgroundColor: "#A5D6A7",
+                      backgroundColor: "#2ECC71",
                     },
                   }}
                 >
@@ -176,13 +178,14 @@ export const Sider: typeof DefaultSider = ({ render }) => {
               sx={{
                 pl: isNested ? 4 : 2,
                 py: isNested ? 1.25 : 1,
-                bgcolor: "#A5D6A7",
-                "&:hover": { backgroundColor: "#43A047" },
+                bgcolor: "#B1ECCA",
+                "&:hover": { backgroundColor: "#2EB1CC" },
                 "&.Mui-selected": {
                   "&:hover": {
-                    backgroundColor: "#A5D6A7",
+                    backgroundColor: "#2ECC71",
+                    opacity: 0.9,
                   },
-                  backgroundColor: "#43A047",
+                  backgroundColor: "#2ECC71",
                 },
                 justifyContent: "center",
                 margin: "8px auto",
@@ -233,13 +236,14 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           sx={{
             pl: 2,
             py: 1,
-            bgcolor: "#A5D6A7",
-            "&:hover": { backgroundColor: "#43A047" },
+            bgcolor: "#B1ECCA",
+            "&:hover": { backgroundColor: "#2EB1CC" },
             "&.Mui-selected": {
               "&:hover": {
-                backgroundColor: "#A5D6A7",
+                backgroundColor: "#2ECC71",
+                opacity: 0.9,
               },
-              backgroundColor: "#43A047",
+              backgroundColor: "#2ECC71",
             },
             justifyContent: "center",
             margin: "8px auto",
@@ -255,7 +259,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
               color: "primary.contrastText",
             }}
           >
-            <Dashboard />
+            <HomeIcon />
           </ListItemIcon>
           <ListItemText
             primary={translate("dashboard.title", "Dashboard")}
@@ -280,13 +284,15 @@ export const Sider: typeof DefaultSider = ({ render }) => {
       <ListItemButton
         key="logout"
         onClick={() => mutateLogout()}
-        sx={{ justifyContent: "center" }}
+        sx={{
+          justifyContent: "center",
+        }}
       >
         <ListItemIcon
           sx={{
             justifyContent: "center",
             minWidth: 36,
-            color: "#43A047",
+            color: "#2ECC71",
           }}
         >
           <Logout />
@@ -296,7 +302,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           primaryTypographyProps={{
             noWrap: true,
             fontSize: "14px",
-            color: "#43A047",
+            color: "#2ECC71",
           }}
         />
       </ListItemButton>
@@ -412,12 +418,12 @@ export const Sider: typeof DefaultSider = ({ render }) => {
           </Box>
           <Button
             sx={{
-              background: "#A5D6A7",
+              background: "#B1ECCA",
               color: "primary.contrastText",
               textAlign: "center",
               borderRadius: 0,
               borderTop: "1px solid #ffffff1a",
-              "&:hover": { background: "#4CAF50" },
+              "&:hover": { background: "#2ECC71" },
             }}
             fullWidth
             size="large"
@@ -433,7 +439,7 @@ export const Sider: typeof DefaultSider = ({ render }) => {
             top: "64px",
             left: "0px",
             borderRadius: "0 6px 6px 0",
-            bgcolor: "#4CAF50",
+            bgcolor: "#2ECC71",
             zIndex: 1199,
             width: "36px",
           }}

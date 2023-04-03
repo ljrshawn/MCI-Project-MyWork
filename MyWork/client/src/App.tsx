@@ -57,8 +57,9 @@ const resources = () => {
     return [
       {
         name: "records",
-        list: StudentRec,
 
+        list: StudentRec,
+        create: StudentRec,
         icon: <EventNoteIcon />,
       },
     ];

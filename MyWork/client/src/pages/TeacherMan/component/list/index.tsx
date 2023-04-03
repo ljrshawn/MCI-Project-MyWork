@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
 import { useImport } from "@pankod/refine-core";
 
-import { CustomButton } from "./control";
+import { CustomButton } from "../../../component/button/addButton";
 import DataGridCus from "./dataGrid";
 
 export const TecManList = () => {
@@ -33,7 +33,7 @@ export const TecManList = () => {
         <>
           <RefreshButton hideText />
           <ImportButton hideText inputProps={inputProps} loading={isLoading} />
-          <CustomButton />
+          <CustomButton url="/manage/create" value="Add" />
         </>
       )}
       wrapperProps={{

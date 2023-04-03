@@ -8,7 +8,7 @@ export const TeacherMan: React.FC<InferencerComponentProps> = ({
   ...props
 }) => {
   const { useParams } = useRouterContext();
-  const { action, id } = useParams<ResourceRouterParams>();
+  const { action } = useParams<ResourceRouterParams>();
 
   switch (actionFromProps ?? action) {
     // case "show":

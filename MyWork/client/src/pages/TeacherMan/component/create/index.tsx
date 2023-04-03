@@ -3,7 +3,7 @@ import { Create, TextField, Box, Typography } from "@pankod/refine-mui";
 import { useForm } from "@pankod/refine-react-hook-form";
 import SaveIcon from "@mui/icons-material/Save";
 
-import { CustomLoadingButtonStyle } from "utils/customButton";
+import { CustomLoadingButtonStyle } from "pages/component/button/customButton";
 
 export const TecManCreate = () => {
   const {

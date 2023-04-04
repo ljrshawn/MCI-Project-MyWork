@@ -1,24 +1,38 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Typography, Card, CardHeader, CardContent } from "@mui/material";
 import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
+import DateTimePickers from "./timePick";
 
-import { CustomButton } from "../../../component/button/addButton";
+import { AddNew } from "./addNew";
 
 export const StuRecList = () => {
   return (
-    <List
-      title={<Typography variant="h5">Records</Typography>}
-      headerButtons={() => (
-        <>
-          <CustomButton url="/records/create" value="Add Records" />
-        </>
-      )}
-      wrapperProps={{
-        sx: {
+    <>
+      <Card
+        sx={{
           backgroundColor: "#FCFCFC",
-        },
-      }}
-      // children={}
-    />
+        }}
+      >
+        <CardHeader
+          sx={{ display: "flex", flexWrap: "wrap" }}
+          title={<Typography variant="h5">Records</Typography>}
+        />
+      </Card>
+
+      <Card
+        sx={{
+          mt: 4,
+          backgroundColor: "#FCFCFC",
+        }}
+      >
+        <CardHeader
+          sx={{ display: "flex", flexWrap: "wrap" }}
+          title={<Typography variant="h6">Add New Records</Typography>}
+        />
+        <CardContent>
+          <DateTimePickers />
+        </CardContent>
+      </Card>
+    </>
   );
 };

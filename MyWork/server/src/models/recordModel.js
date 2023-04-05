@@ -4,12 +4,16 @@ const recordSchema = new mongoose.Schema({
   id: {
     type: String,
   },
-  date: {
-    type: Date,
+  start: {
+    type: String,
+    require: true,
+  },
+  end: {
+    type: String,
     require: true,
   },
   hour: {
-    type: Number,
+    type: String,
     require: true,
   },
   task: {
@@ -18,7 +22,12 @@ const recordSchema = new mongoose.Schema({
   },
   evidence: [
     {
-      type: String,
+      name: {
+        type: String,
+      },
+      url: {
+        type: String,
+      },
     },
   ],
 });

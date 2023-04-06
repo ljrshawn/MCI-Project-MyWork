@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
 import { useImport } from "@pankod/refine-core";
 
-import { CustomButton } from "../../../component/button/addButton";
+import { CustomButton } from "../../../component/button/newPageButton";
 import DataGridCus from "./dataGrid";
 
 export const TecManList = () => {

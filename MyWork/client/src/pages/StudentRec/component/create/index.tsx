@@ -3,7 +3,7 @@ import { Create, TextField, Box, Typography } from "@pankod/refine-mui";
 import { useForm } from "@pankod/refine-react-hook-form";
 import SaveIcon from "@mui/icons-material/Save";
 
-import { CustomLoadingButtonStyle } from "pages/component/button/customButton";
+import { CustomLoadingButtonStyle } from "pages/component/button/cusButtonStyle";
 
 export const StuRecCreate = () => {
   const {
@@ -24,9 +24,8 @@ export const StuRecCreate = () => {
             loadingPosition="start"
             variant="contained"
             startIcon={<SaveIcon />}
-          >
-            Save
-          </CustomLoadingButtonStyle>
+            value="Save"
+          />
         </>
       )}
     >

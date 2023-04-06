@@ -1,9 +1,7 @@
 import React from "react";
 import { Typography, Card, CardHeader, CardContent } from "@mui/material";
 import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
-import DateTimePickers from "./timePick";
-
-import { AddNew } from "./addNew";
+import AddNewRecords from "./addNewRecords";
 
 export const StuRecList = () => {
   return (
@@ -30,7 +28,7 @@ export const StuRecList = () => {
           title={<Typography variant="h6">Add New Records</Typography>}
         />
         <CardContent>
-          <DateTimePickers />
+          <AddNewRecords />
         </CardContent>
       </Card>
     </>

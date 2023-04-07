@@ -7,12 +7,14 @@ import { CusSaveButtonProps } from "../interface/cusSaveButtonProp";
 export const CustomSaveButton: React.FC<CusSaveButtonProps> = ({
   value,
   type,
+  ...props
 }) => {
   return (
     <CustomLoadingButtonStyle
       type={type === "submit" ? "submit" : "button"}
       variant="contained"
       startIcon={<SaveIcon />}
+      {...props}
     >
       {value}
     </CustomLoadingButtonStyle>

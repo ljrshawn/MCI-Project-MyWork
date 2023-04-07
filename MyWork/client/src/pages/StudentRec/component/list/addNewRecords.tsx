@@ -20,6 +20,7 @@ export default function AddNewRecords() {
   const [start, setStart] = React.useState<Dayjs | null>(dayjs());
   const [end, setEnd] = React.useState<Dayjs | null>(dayjs());
   const [hour, setHour] = React.useState("0");
+  const [task, setTask] = React.useState("");
   const [evidenceImg, setEvidenceImage] = React.useState({
     name: "",
     url: "",
@@ -39,6 +40,10 @@ export default function AddNewRecords() {
     const hour = String((minutes / 60).toFixed(2));
 
     setHour(hour);
+  };
+
+  const handleTask = (newValue: any) => {
+    setTask(newValue);
   };
 
   const startMaxTime = () => {
@@ -61,9 +66,15 @@ export default function AddNewRecords() {
   };
 
   const onFinishHandler = async (data: FieldValues) => {
+    // const date = start
     await onFinish({
-      start,
-      end,
+      year: `${start?.year()}`,
+      month: `${start?.month()}`,
+      date: `${start?.date()}`,
+      day: `${start?.day()}`,
+      fullDate: `${start?.format().slice(0, 10)}`,
+      start: `${start?.format()}`,
+      end: `${end?.format()}`,
       hour,
       task: `${data.task}`,
       evidence: {
@@ -71,6 +82,10 @@ export default function AddNewRecords() {
         url: evidenceImg.url,
       },
     });
+    setStart(dayjs());
+    setEnd(dayjs());
+    setHour("0");
+    setTask("");
   };
 
   return (
@@ -78,11 +93,13 @@ export default function AddNewRecords() {
       start={start}
       end={end}
       hour={hour}
+      task={task}
       handleStartTime={handleStartTime}
       startMaxTime={startMaxTime}
       handleEndTime={handleEndTime}
       handleHourTime={handleHourTime}
       handleEvidenceChange={handleEvidenceChange}
+      handleTask={handleTask}
       register={register}
       errors={errors}
       handleSubmit={handleSubmit}

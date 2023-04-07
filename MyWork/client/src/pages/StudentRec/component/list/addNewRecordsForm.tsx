@@ -15,11 +15,13 @@ const AddNewRecordsForm = ({
   start,
   end,
   hour,
+  task,
   handleStartTime,
   startMaxTime,
   handleEndTime,
   handleHourTime,
   handleEvidenceChange,
+  handleTask,
   register,
   errors,
   handleSubmit,
@@ -74,6 +76,8 @@ const AddNewRecordsForm = ({
             {...register("task", {
               required: "This field is required",
             })}
+            value={task}
+            onChange={(event) => handleTask(event.target.value)}
             error={!!(errors as any)?.task}
             helperText={(errors as any)?.task?.message}
             margin="normal"

@@ -1,5 +1,4 @@
 const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
 const Team = require("../models/teamModel");
 
 exports.getAllTeams = catchAsync(async (req, res, next) => {

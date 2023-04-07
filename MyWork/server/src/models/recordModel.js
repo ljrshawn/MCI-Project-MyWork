@@ -4,6 +4,21 @@ const recordSchema = new mongoose.Schema({
   id: {
     type: String,
   },
+  year: {
+    type: String,
+  },
+  month: {
+    type: String,
+  },
+  date: {
+    type: String,
+  },
+  day: {
+    type: String,
+  },
+  fullDate: {
+    type: String,
+  },
   start: {
     type: String,
     require: true,

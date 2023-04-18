@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Card, CardHeader, CardContent } from "@mui/material";
 import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
 import AddNewRecords from "./addNewRecords";
+// import CusScheduler from "./view";
 
 export const StuRecList = () => {
   return (
@@ -15,6 +16,9 @@ export const StuRecList = () => {
           sx={{ display: "flex", flexWrap: "wrap" }}
           title={<Typography variant="h5">Records</Typography>}
         />
+        {/* <CardContent>
+          <CusScheduler />
+        </CardContent> */}
       </Card>
 
       <Card

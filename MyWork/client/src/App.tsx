@@ -59,7 +59,6 @@ const resources = () => {
         name: "records",
 
         list: StudentRec,
-        create: StudentRec,
         icon: <EventNoteIcon />,
       },
     ];

@@ -1,6 +1,6 @@
 import type { InferencerComponentProps } from "@pankod/refine-inferencer";
 import { ResourceRouterParams, useRouterContext } from "@pankod/refine-core";
-import { StuRecList, StuRecCreate, StuRecEdit } from "./component";
+import { StuRecList } from "./component";
 
 export const StudentRec: React.FC<InferencerComponentProps> = ({
   action: actionFromProps,
@@ -13,10 +13,10 @@ export const StudentRec: React.FC<InferencerComponentProps> = ({
   switch (actionFromProps ?? action) {
     // case "show":
     //   return <ShowInferencer  />;
-    case "create":
-      return <StuRecCreate />;
-    case "edit":
-      return <StuRecEdit />;
+    // case "create":
+    //   return <StuRecCreate />;
+    // case "edit":
+    //   return <StuRecEdit />;
     default:
       return <StuRecList />;
   }

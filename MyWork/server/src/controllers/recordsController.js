@@ -22,3 +22,20 @@ exports.addNewRecords = catchAsync(async (req, res, next) => {
   await user.updateOne({ records: userRecords });
   res.status(200).json(newRecord);
 });
+
+exports.getUserRecords = catchAsync(async (req, res, next) => {
+  const { user } = req;
+
+  const promises = user.records.map(async (el) => {
+    // console.log(typeof JSON.stringify(el));
+
+    if (el) {
+      const record = await Record.findById(el);
+
+      return record;
+    }
+  });
+  const records = await Promise.all(promises);
+
+  res.status(200).json(records);
+});

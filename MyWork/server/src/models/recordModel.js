@@ -42,6 +42,7 @@ const recordSchema = new mongoose.Schema({
       },
       url: {
         type: String,
+        select: false,
       },
     },
   ],

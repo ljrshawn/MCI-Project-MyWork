@@ -86,6 +86,7 @@ export default function AddNewRecords() {
     setEnd(dayjs());
     setHour("0");
     setTask("");
+    setEvidenceImage({ name: "", url: "" });
   };
 
   return (

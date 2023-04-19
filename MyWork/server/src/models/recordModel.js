@@ -28,7 +28,7 @@ const recordSchema = new mongoose.Schema({
     require: true,
   },
   hour: {
-    type: String,
+    type: Number,
     require: true,
   },
   task: {

@@ -19,7 +19,9 @@ exports.addNewRecords = catchAsync(async (req, res, next) => {
 
   userRecords.push(newRecord);
 
-  await user.updateOne({ records: userRecords });
+  const hours = user.hours + newRecord.hour;
+
+  await user.updateOne({ hours: hours, records: userRecords });
   res.status(200).json(newRecord);
 });
 

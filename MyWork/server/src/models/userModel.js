@@ -53,6 +53,10 @@ const userSchema = new mongoose.Schema({
   tag: {
     type: String,
   },
+  hours: {
+    type: Number,
+    default: 0,
+  },
   records: [
     {
       type: mongoose.Schema.Types.ObjectId,

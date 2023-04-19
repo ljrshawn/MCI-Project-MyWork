@@ -20,8 +20,10 @@
     "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^26.0.23",
     "axios": "^0.26.1",
+    "chart.js": "^4.2.1",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.0",
     "rrule": "^2.7.2",
@@ -33,7 +35,7 @@
     "typescript": "^4.7.4"
   },
   "scripts": {
-    "dev": "GENERATE_SOURCEMAP=false refine start",
+    "dev": "refine start",
     "build": "refine build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

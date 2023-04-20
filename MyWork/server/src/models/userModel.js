@@ -59,8 +59,19 @@ const userSchema = new mongoose.Schema({
   },
   records: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Record",
+      detail: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Record",
+      },
+      year: {
+        type: Number,
+      },
+      month: {
+        type: Number,
+      },
+      date: {
+        type: Number,
+      },
     },
   ],
 });

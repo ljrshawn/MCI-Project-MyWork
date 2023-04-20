@@ -1,3 +1,5 @@
+import { GetListResponse, BaseRecord } from "@pankod/refine-core";
+
 export interface newRecordsForm {
   start: Dayjs;
   end: Dayjs;
@@ -15,4 +17,8 @@ export interface newRecordsForm {
   handleSubmit: any;
   onFinishHandler: (data: FieldValues) => Promise<void> | void;
   evidenceImg: { name: string; url: string };
+}
+
+export interface personalRecordsProps {
+  data: GetListResponse<BaseRecord> | undefined;
 }

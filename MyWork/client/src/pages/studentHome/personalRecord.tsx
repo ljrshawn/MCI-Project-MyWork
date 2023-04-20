@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 
+import { personalRecordsProps } from "pages/component/interface/form";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -20,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-export const PerRecords = () => {
+export const PerRecords = ({ data }: personalRecordsProps) => {
   const options = {
     responsive: true,
     aspectRatio: 4,
@@ -37,6 +39,10 @@ export const PerRecords = () => {
         grid: {
           display: false,
         },
+        title: {
+          display: true,
+          text: "Hour(s)",
+        },
       },
     },
     plugins: {
@@ -49,30 +55,58 @@ export const PerRecords = () => {
     },
   };
 
-  const labels = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-  ];
+  const labels = [];
+  // const hours = [];
+  // const oriData = data?.data.map((el) => {
+  //   return el;
+  // });
 
-  const data = {
+  for (let index = 6; index >= 0; index--) {
+    const label = new Date(Date.now() - index * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(5, 10);
+    labels.push(label);
+  }
+
+  // let IL = 0;
+
+  // if (oriData) {
+  //   for (let index = 0; index < labels.length; index++) {
+  //     if (IL < oriData.length) {
+  //       if (oriData[IL].fullDate.slice(5) === labels[index]) {
+  //         hours.push(oriData[IL].hour);
+  //         IL++;
+  //       } else {
+  //         hours.push(0);
+  //       }
+  //     } else {
+  //       console.log(IL);
+
+  //       hours.push(0);
+  //     }
+  //   }
+  // }
+  // const chartData = {
+  //   labels,
+  //   datasets: [
+  //     {
+  //       label: "Latest 7 Days",
+  //       data: hours,
+  //       backgroundColor: "rgba(255, 99, 132, 0.8)",
+  //       barPercentage: 0.5,
+  //     },
+  //   ],
+  // };
+
+  const chartData = {
     labels,
     datasets: [
       {
-        label: "Dataset 1",
-        data: [200, 300, 400, 500, 600, 700],
-        // data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-        barPercentage: 0.5,
-      },
-      {
-        label: "Dataset 2",
-        data: [200, 300, 400, 500, 600, 700, 800],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        label: "Latest 7 Days",
+        data: data?.data.map((el) => {
+          return { x: el.fullDate.slice(5), y: el.hour };
+        }),
+        backgroundColor: "rgba(255, 99, 132, 0.8)",
         barPercentage: 0.5,
       },
     ],
@@ -89,7 +123,7 @@ export const PerRecords = () => {
         title={<Typography variant="h6">My Workload</Typography>}
       />
       <CardContent>
-        <Bar options={options} data={data} />
+        <Bar options={options} data={chartData} />
       </CardContent>
     </Card>
   );

@@ -14,6 +14,7 @@ const userRouter = require("./src/routes/userRoutes");
 const manageRouter = require("./src/routes/manageRoutes");
 const recordRouter = require("./src/routes/recordRoutes");
 const teamRouter = require("./src/routes/teamRoutes");
+const stuRecordRouter = require("./src/routes/stuRecordRouters");
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/manage", manageRouter);
 // app.use("/active/:token", manageRouter);
 app.use("/api/v1/records", recordRouter);
+app.use("/api/v1/stu_records", stuRecordRouter);
 app.use("/api/v1/teams", teamRouter);
 
 app.all("*", (req, res, next) => {

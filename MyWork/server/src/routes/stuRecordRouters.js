@@ -7,7 +7,6 @@ const router = express.Router();
 
 router
   .route("/")
-  .post(authController.protect, recordsController.addNewRecords)
-  .get(authController.protect, recordsController.getUserRecords);
+  .get(authController.protect, recordsController.getUserHomeRecords);
 
 module.exports = router;

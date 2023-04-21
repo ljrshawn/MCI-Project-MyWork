@@ -1,19 +1,28 @@
 import React from "react";
 import { Typography, CardHeader } from "@mui/material";
-import { useList } from "@pankod/refine-core";
+import { Box } from "@pankod/refine-mui";
 
 import { PerRecords } from "./personalRecord";
 import { TeamRecords } from "./teamRecords";
 import { CustomButton } from "pages/component/button/newPageButton";
-import { Box } from "@pankod/refine-mui";
+import { ShowTeamMember } from "./showTeamMember";
 
 export const StudentHome = () => {
-  const { data, isLoading } = useList({
-    resource: "stu_records",
-    config: {
-      hasPagination: false,
-    },
-  });
+  const [openTeamMember, setOpenTeamMember] = React.useState(false);
+
+  const [id, setId] = React.useState("");
+  const [name, setName] = React.useState("");
+
+  const handleClickOpen = (event: any, elements: any, chart: any) => {
+    setId(elements[0].element.$context.raw.id);
+    setName(elements[0].element.$context.raw.name);
+
+    setOpenTeamMember(true);
+  };
+
+  const handleClose = () => {
+    setOpenTeamMember(false);
+  };
 
   return (
     <>
@@ -27,8 +36,18 @@ export const StudentHome = () => {
         }
       />
 
-      <PerRecords data={data} />
-      <TeamRecords />
+      <PerRecords resource="stu_records" title="My Workload" />
+      <TeamRecords
+        open={openTeamMember}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+      />
+      <ShowTeamMember
+        open={openTeamMember}
+        handleClose={handleClose}
+        id={id}
+        name={name}
+      />
     </>
   );
 };

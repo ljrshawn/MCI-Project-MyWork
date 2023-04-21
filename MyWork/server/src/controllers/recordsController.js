@@ -1,18 +1,18 @@
 const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
+// const AppError = require("../utils/appError");
 const Record = require("../models/recordModel");
 const User = require("../models/userModel");
 const Team = require("../models/teamModel");
 
 exports.addNewRecords = catchAsync(async (req, res, next) => {
-  const record = await Record.findOne({ fullDate: req.body.fullDate });
+  // const record = await Record.findOne({ fullDate: req.body.fullDate });
 
-  if (record) {
-    const message = `Duplicate field date, please using edit!`;
-    return next(new AppError(message, 400));
-  }
+  // if (record) {
+  //   const message = `Duplicate field date, please using edit!`;
+  //   return next(new AppError(message, 400));
+  // }
 
-  const temRecord = await Record.create(req.body);
+  const temRecord = await Record.create({ ...req.body, hostId: req.user.id });
 
   // Save record to user
   const newRecord = {
@@ -56,7 +56,7 @@ exports.getUserRecords = catchAsync(async (req, res, next) => {
   res.status(200).json(records);
 });
 
-exports.getUserHomeRecords = catchAsync(async (req, res, next) => {
+exports.getStuHomeRecords = catchAsync(async (req, res, next) => {
   const { user } = req;
 
   const filter = user.records.filter((el) => {
@@ -85,7 +85,7 @@ exports.getUserHomeRecords = catchAsync(async (req, res, next) => {
   res.status(200).json(records);
 });
 
-exports.getUserTeamHomeRecords = catchAsync(async (req, res, next) => {
+exports.getStuTeamHomeRecords = catchAsync(async (req, res, next) => {
   const team = await Team.findOne({ number: `${req.user.team}` });
 
   let hours = [req.user];
@@ -100,4 +100,33 @@ exports.getUserTeamHomeRecords = catchAsync(async (req, res, next) => {
   }
 
   res.status(200).json(hours);
+});
+
+exports.getStuMemRecords = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  const filter = user.records.filter((el) => {
+    const start = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const end = new Date();
+    const elDate = new Date(el.year, el.month, el.date);
+    return elDate >= start && elDate <= end;
+  });
+
+  const compare = function (a, b) {
+    return (
+      new Date(a.year, a.month, a.date) - new Date(b.year, b.month, b.date)
+    );
+  };
+
+  filter.sort(compare);
+
+  const promises = filter.map(async (el) => {
+    if (el) {
+      const record = await Record.findById(el.detail);
+      return record;
+    }
+  });
+  const records = await Promise.all(promises);
+
+  res.status(200).json(records);
 });

@@ -20,5 +20,14 @@ export interface newRecordsForm {
 }
 
 export interface personalRecordsProps {
-  data: GetListResponse<BaseRecord> | undefined;
+  resource: string;
+  title?: string;
+}
+
+export interface openDialogProps {
+  open: boolean;
+  handleClickOpen?: (e: any, legendItem: any, legend: any) => void;
+  handleClose?: () => void;
+  id?: string;
+  name?: string;
 }

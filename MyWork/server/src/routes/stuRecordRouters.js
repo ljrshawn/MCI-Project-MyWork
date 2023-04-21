@@ -7,10 +7,14 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authController.protect, recordsController.getUserHomeRecords);
+  .get(authController.protect, recordsController.getStuHomeRecords);
 
 router
   .route("/team")
-  .get(authController.protect, recordsController.getUserTeamHomeRecords);
+  .get(authController.protect, recordsController.getStuTeamHomeRecords);
+
+router
+  .route("/:id")
+  .get(authController.protect, recordsController.getStuMemRecords);
 
 module.exports = router;

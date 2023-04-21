@@ -1,4 +1,5 @@
 import React from "react";
+import { useList } from "@pankod/refine-core";
 import { Typography, Card, CardHeader, CardContent } from "@mui/material";
 import {
   Chart as ChartJS,
@@ -22,7 +23,16 @@ ChartJS.register(
   Legend
 );
 
-export const PerRecords = ({ data }: personalRecordsProps) => {
+export const PerRecords = ({ resource, title }: personalRecordsProps) => {
+  const { data, isLoading } = useList({
+    resource: `${resource}`,
+    config: {
+      hasPagination: false,
+    },
+  });
+
+  title = title || `My Workload`;
+
   const options = {
     responsive: true,
     aspectRatio: 4,
@@ -47,7 +57,7 @@ export const PerRecords = ({ data }: personalRecordsProps) => {
     },
     plugins: {
       legend: {
-        position: "top" as const,
+        position: "right" as const,
         // onClick: (e: any, legendItem: any, legend: any) => {
         //   console.log(e);
         // },
@@ -86,7 +96,7 @@ export const PerRecords = ({ data }: personalRecordsProps) => {
     >
       <CardHeader
         sx={{ display: "flex", flexWrap: "wrap" }}
-        title={<Typography variant="h6">My Workload</Typography>}
+        title={<Typography variant="h6">{title}</Typography>}
       />
       <CardContent>
         <Bar options={options} data={chartData} />

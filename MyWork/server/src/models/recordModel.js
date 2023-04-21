@@ -35,6 +35,10 @@ const recordSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  hostId: {
+    type: String,
+    require: true,
+  },
   evidence: [
     {
       name: {

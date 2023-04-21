@@ -3,10 +3,15 @@ import { Typography, Card, CardHeader, CardContent } from "@mui/material";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import { useList } from "@pankod/refine-core";
+import { openDialogProps } from "pages/component/interface/form";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const TeamRecords = () => {
+export const TeamRecords = ({
+  open,
+  handleClickOpen,
+  handleClose,
+}: openDialogProps) => {
   const { data, isLoading } = useList({
     resource: "stu_records/team",
     config: {
@@ -19,6 +24,12 @@ export const TeamRecords = () => {
     parsing: {
       key: "hours",
     },
+    plugins: {
+      legend: {
+        position: "right" as const,
+      },
+    },
+    onClick: handleClickOpen,
   };
 
   const chartData = {
@@ -31,12 +42,14 @@ export const TeamRecords = () => {
         data: data?.data.map((el) => {
           if (el.hours) {
             return {
-              id: `${el.firstName}`,
+              name: `${el.firstName}`,
+              id: `${el.id}`,
               hours: `${el.hours}`,
             };
           } else {
             return {
-              id: `${el.firstName}`,
+              name: `${el.firstName}`,
+              id: `${el.id}`,
               hours: `0`,
             };
           }

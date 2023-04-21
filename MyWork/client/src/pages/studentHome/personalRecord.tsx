@@ -56,10 +56,6 @@ export const PerRecords = ({ data }: personalRecordsProps) => {
   };
 
   const labels = [];
-  // const hours = [];
-  // const oriData = data?.data.map((el) => {
-  //   return el;
-  // });
 
   for (let index = 6; index >= 0; index--) {
     const label = new Date(Date.now() - index * 24 * 60 * 60 * 1000)
@@ -68,41 +64,11 @@ export const PerRecords = ({ data }: personalRecordsProps) => {
     labels.push(label);
   }
 
-  // let IL = 0;
-
-  // if (oriData) {
-  //   for (let index = 0; index < labels.length; index++) {
-  //     if (IL < oriData.length) {
-  //       if (oriData[IL].fullDate.slice(5) === labels[index]) {
-  //         hours.push(oriData[IL].hour);
-  //         IL++;
-  //       } else {
-  //         hours.push(0);
-  //       }
-  //     } else {
-  //       console.log(IL);
-
-  //       hours.push(0);
-  //     }
-  //   }
-  // }
-  // const chartData = {
-  //   labels,
-  //   datasets: [
-  //     {
-  //       label: "Latest 7 Days",
-  //       data: hours,
-  //       backgroundColor: "rgba(255, 99, 132, 0.8)",
-  //       barPercentage: 0.5,
-  //     },
-  //   ],
-  // };
-
   const chartData = {
     labels,
     datasets: [
       {
-        label: "Latest 7 Days",
+        label: "Workload",
         data: data?.data.map((el) => {
           return { x: el.fullDate.slice(5), y: el.hour };
         }),

@@ -2,7 +2,7 @@ import React from "react";
 import SaveIcon from "@mui/icons-material/Save";
 
 import { CustomLoadingButtonStyle } from "pages/component/button/cusButtonStyle";
-import { CusSaveButtonProps } from "../interface/cusSaveButtonProp";
+import { CusSaveButtonProps } from "../interface/cusPageButtonProp";
 
 export const CustomSaveButton: React.FC<CusSaveButtonProps> = ({
   value,

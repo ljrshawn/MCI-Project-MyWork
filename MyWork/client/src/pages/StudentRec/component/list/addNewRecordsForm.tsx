@@ -132,7 +132,7 @@ const AddNewRecordsForm = ({
 
             <CustomSaveButton
               type="submit"
-              value="Add New"
+              value="Save"
               loading={formLoading}
               loadingPosition="start"
             />

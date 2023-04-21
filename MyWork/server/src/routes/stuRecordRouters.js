@@ -9,4 +9,8 @@ router
   .route("/")
   .get(authController.protect, recordsController.getUserHomeRecords);
 
+router
+  .route("/team")
+  .get(authController.protect, recordsController.getUserTeamHomeRecords);
+
 module.exports = router;

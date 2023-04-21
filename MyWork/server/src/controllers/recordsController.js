@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const Record = require("../models/recordModel");
 const User = require("../models/userModel");
+const Team = require("../models/teamModel");
 
 exports.addNewRecords = catchAsync(async (req, res, next) => {
   const record = await Record.findOne({ fullDate: req.body.fullDate });
@@ -82,4 +83,21 @@ exports.getUserHomeRecords = catchAsync(async (req, res, next) => {
   const records = await Promise.all(promises);
 
   res.status(200).json(records);
+});
+
+exports.getUserTeamHomeRecords = catchAsync(async (req, res, next) => {
+  const team = await Team.findOne({ number: `${req.user.team}` });
+
+  let hours = [req.user];
+  if (team) {
+    const promises = team.member.map(async (el) => {
+      if (el) {
+        const user = await User.findById(el);
+        return user;
+      }
+    });
+    hours = await Promise.all(promises);
+  }
+
+  res.status(200).json(hours);
 });

@@ -6,26 +6,20 @@ import AddNewRecords from "./addNewRecords";
 export const StuRecList = () => {
   return (
     <>
-      <Card
-        sx={{
-          backgroundColor: "#FCFCFC",
-        }}
-      >
-        <CardHeader
-          sx={{ display: "flex", flexWrap: "wrap" }}
-          title={<Typography variant="h5">Records</Typography>}
-        />
-        {/* <CardContent>
-          <CusScheduler />
-        </CardContent> */}
-      </Card>
+      <CardHeader
+        sx={{ display: "flex", flexWrap: "wrap" }}
+        title={<Typography variant="h5">Records</Typography>}
+      />
 
       <Card
         sx={{
-          mt: 4,
           backgroundColor: "#FCFCFC",
         }}
       >
+        {/* <CardContent>
+          <CusScheduler />
+        </CardContent> */}
+
         <CardHeader
           sx={{ display: "flex", flexWrap: "wrap" }}
           title={<Typography variant="h6">Add New Records</Typography>}

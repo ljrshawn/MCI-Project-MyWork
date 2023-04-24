@@ -23,7 +23,11 @@ ChartJS.register(
   Legend
 );
 
-export const PerRecords = ({ resource, title }: personalRecordsProps) => {
+export const PerRecords = ({
+  resource,
+  title,
+  handleClickOpen,
+}: personalRecordsProps) => {
   const { data, isLoading } = useList({
     resource: `${resource}`,
     config: {
@@ -37,6 +41,10 @@ export const PerRecords = ({ resource, title }: personalRecordsProps) => {
     responsive: true,
     aspectRatio: 4,
     borderRadius: 10,
+    parsing: {
+      xAxisKey: "x",
+      yAxisKey: "y",
+    },
     scales: {
       x: {
         stacked: true,
@@ -58,11 +66,9 @@ export const PerRecords = ({ resource, title }: personalRecordsProps) => {
     plugins: {
       legend: {
         position: "right" as const,
-        // onClick: (e: any, legendItem: any, legend: any) => {
-        //   console.log(e);
-        // },
       },
     },
+    onClick: handleClickOpen,
   };
 
   const labels = [];
@@ -80,7 +86,7 @@ export const PerRecords = ({ resource, title }: personalRecordsProps) => {
       {
         label: "Workload",
         data: data?.data.map((el) => {
-          return { x: el.fullDate.slice(5), y: el.hour };
+          return { x: el.fullDate.slice(5), y: el.hour, id: el.id };
         }),
         backgroundColor: "rgba(255, 99, 132, 0.8)",
         barPercentage: 0.5,

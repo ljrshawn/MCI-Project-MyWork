@@ -10,4 +10,8 @@ router
   .post(authController.protect, recordsController.addNewRecords)
   .get(authController.protect, recordsController.getUserRecords);
 
+router
+  .route("/:id")
+  .get(authController.protect, recordsController.getRecordsEvidence);
+
 module.exports = router;

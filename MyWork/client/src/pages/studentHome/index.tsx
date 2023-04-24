@@ -6,21 +6,40 @@ import { PerRecords } from "./personalRecord";
 import { TeamRecords } from "./teamRecords";
 import { CustomButton } from "pages/component/button/newPageButton";
 import { ShowTeamMember } from "./showTeamMember";
+import { ShowEvidence } from "./showEvidence";
 
 export const StudentHome = () => {
+  const [openPerEvidence, setOpenPerEvidence] = React.useState(false);
+
+  const [perEvidenceId, setPerEvidenceId] = React.useState("");
+
+  const handlePerEvidenceClickOpen = (
+    event: any,
+    elements: any,
+    chart: any
+  ) => {
+    setPerEvidenceId(elements[0].element.$context.raw.id);
+
+    setOpenPerEvidence(true);
+  };
+
+  const handlePerEvidenceClose = () => {
+    setOpenPerEvidence(false);
+  };
+
   const [openTeamMember, setOpenTeamMember] = React.useState(false);
 
-  const [id, setId] = React.useState("");
-  const [name, setName] = React.useState("");
+  const [teamMemberId, setTeamMemberId] = React.useState("");
+  const [nameTeamMember, setNameTeamMember] = React.useState("");
 
-  const handleClickOpen = (event: any, elements: any, chart: any) => {
-    setId(elements[0].element.$context.raw.id);
-    setName(elements[0].element.$context.raw.name);
+  const handleTeamMemberClickOpen = (event: any, elements: any, chart: any) => {
+    setTeamMemberId(elements[0].element.$context.raw.id);
+    setNameTeamMember(elements[0].element.$context.raw.name);
 
     setOpenTeamMember(true);
   };
 
-  const handleClose = () => {
+  const handleTeamMemberClose = () => {
     setOpenTeamMember(false);
   };
 
@@ -36,17 +55,26 @@ export const StudentHome = () => {
         }
       />
 
-      <PerRecords resource="stu_records" title="My Workload" />
+      <PerRecords
+        resource="stu_records"
+        title="My Workload"
+        handleClickOpen={handlePerEvidenceClickOpen}
+      />
+      <ShowEvidence
+        open={openPerEvidence}
+        handleClose={handlePerEvidenceClose}
+        id={perEvidenceId}
+      />
       <TeamRecords
         open={openTeamMember}
-        handleClickOpen={handleClickOpen}
-        handleClose={handleClose}
+        handleClickOpen={handleTeamMemberClickOpen}
+        handleClose={handleTeamMemberClose}
       />
       <ShowTeamMember
         open={openTeamMember}
-        handleClose={handleClose}
-        id={id}
-        name={name}
+        handleClose={handleTeamMemberClose}
+        id={teamMemberId}
+        name={nameTeamMember}
       />
     </>
   );

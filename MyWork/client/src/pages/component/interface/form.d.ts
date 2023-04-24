@@ -22,11 +22,12 @@ export interface newRecordsForm {
 export interface personalRecordsProps {
   resource: string;
   title?: string;
+  handleClickOpen?: (event: any, elements: any, chart: any) => void;
 }
 
 export interface openDialogProps {
   open: boolean;
-  handleClickOpen?: (e: any, legendItem: any, legend: any) => void;
+  handleClickOpen?: (event: any, elements: any, chart: any) => void;
   handleClose?: () => void;
   id?: string;
   name?: string;

@@ -130,3 +130,9 @@ exports.getStuMemRecords = catchAsync(async (req, res, next) => {
 
   res.status(200).json(records);
 });
+
+exports.getRecordsEvidence = catchAsync(async (req, res, next) => {
+  const record = await Record.findById(req.params.id).select("+evidence.url");
+
+  res.status(200).json([record]);
+});

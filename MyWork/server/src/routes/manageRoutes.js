@@ -6,16 +6,25 @@ const teamController = require("../controllers/teamController");
 
 const router = express.Router();
 
-router.post("/", authController.protect, manageController.createStudent);
+router
+  .route("/")
+  .post(authController.protect, manageController.createStudent)
+  .get(authController.protect, manageController.getAllStudents);
+
 router.post("/import", authController.protect, manageController.importStudent);
-router.get("/", authController.protect, manageController.getAllStudents);
-router.delete("/:id", authController.protect, manageController.deleteUser);
-router.get("/:id", authController.protect, manageController.getStudents);
-router.patch(
-  "/:id",
-  authController.protect,
-  manageController.updateStudents,
-  teamController.addTeams
-);
+
+router
+  .route("/teamNumber")
+  .get(authController.protect, teamController.getAllTeamsRecords);
+
+router
+  .route("/:id")
+  .delete(authController.protect, manageController.deleteUser)
+  .get(authController.protect, manageController.getStudents)
+  .patch(
+    authController.protect,
+    manageController.updateStudents,
+    teamController.addTeams
+  );
 
 module.exports = router;

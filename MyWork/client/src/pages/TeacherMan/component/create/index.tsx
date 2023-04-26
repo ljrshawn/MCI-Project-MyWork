@@ -24,8 +24,9 @@ export const TecManCreate = () => {
             loadingPosition="start"
             variant="contained"
             startIcon={<SaveIcon />}
-            value="Save"
-          />
+          >
+            Save
+          </CustomLoadingButtonStyle>
         </>
       )}
     >

@@ -5,7 +5,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 import { openDialogProps } from "pages/component/interface/form";
 import { CustomButtonStyle } from "pages/component/button/cusButtonStyle";
-import { PerRecords } from "./personalRecord";
+import { PerRecords } from "../../studentHome/personalRecord";
 import { ShowEvidence } from "./showEvidence";
 
 export const ShowTeamMember = ({
@@ -46,6 +46,11 @@ export const ShowTeamMember = ({
             handleClickOpen={handlePerEvidenceClickOpen}
           />
         </DialogContent>
+        <ShowEvidence
+          open={openPerEvidence}
+          handleClose={handlePerEvidenceClose}
+          id={perEvidenceId}
+        />
         <DialogActions
           sx={{
             bgcolor: "#F5F9FD",
@@ -61,11 +66,6 @@ export const ShowTeamMember = ({
           </CustomButtonStyle>
         </DialogActions>
       </Dialog>
-      <ShowEvidence
-        open={openPerEvidence}
-        handleClose={handlePerEvidenceClose}
-        id={perEvidenceId}
-      />
     </div>
   );
 };

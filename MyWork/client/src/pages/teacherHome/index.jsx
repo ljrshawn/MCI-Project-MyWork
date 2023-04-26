@@ -1,5 +1,15 @@
 import React from "react";
+import { CardHeader, Typography } from "@pankod/refine-mui";
+import VirtualizedList from "./main";
 
 export const TeacherHome = () => {
-  return <div>TeacherHome</div>;
+  return (
+    <>
+      <CardHeader
+        sx={{ display: "flex", flexWrap: "wrap" }}
+        title={<Typography variant="h5">DashBoard</Typography>}
+      />
+      <VirtualizedList />
+    </>
+  );
 };

@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const Team = require("../models/teamModel");
+const User = require("../models/userModel");
 
 exports.getAllTeams = catchAsync(async (req, res, next) => {
   const teams = await Team.find();
@@ -44,4 +45,25 @@ exports.addTeams = catchAsync(async (req, res, next) => {
 
   await team.updateOne({ member: newMember });
   res.status(200).json(team);
+});
+
+exports.getAllTeamsRecords = catchAsync(async (req, res, next) => {
+  const teams = await Team.find();
+
+  let users = [];
+  if (teams) {
+    const promises = teams.map(async (el) => {
+      if (el.member && el.member.length > 0) {
+        const promise = el.member.map(async (e) => {
+          const user = await User.findById(e);
+          return user;
+        });
+        return await Promise.all(promise);
+      }
+    });
+
+    users = await Promise.all(promises);
+  }
+
+  res.status(200).json(users);
 });

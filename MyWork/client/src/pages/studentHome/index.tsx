@@ -5,8 +5,8 @@ import { Box } from "@pankod/refine-mui";
 import { PerRecords } from "./personalRecord";
 import { TeamRecords } from "./teamRecords";
 import { CustomButton } from "pages/component/button/newPageButton";
-import { ShowTeamMember } from "./showTeamMember";
-import { ShowEvidence } from "./showEvidence";
+import { ShowTeamMember } from "../component/chartModel/showTeamMember";
+import { ShowEvidence } from "pages/component/chartModel/showEvidence";
 
 export const StudentHome = () => {
   const [openPerEvidence, setOpenPerEvidence] = React.useState(false);

@@ -4,6 +4,8 @@ import {
   DialogActions,
   DialogContent,
   ImageListItem,
+  CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import { useList } from "@pankod/refine-core";
 
@@ -22,33 +24,41 @@ export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
 
   const ShowImg = () => {
     if (open && data?.data[0] !== null) {
-      console.log(data);
       return data?.data.map((el) => {
         return (
           <ImageListItem key={el.fullDate}>
-            <img src={el.evidence[0].url} alt={el.fullDate} loading="lazy" />
+            <img
+              src={el.evidence[0].url}
+              alt={el.fullDate}
+              loading="lazy"
+              style={{
+                width: "50%",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            />
           </ImageListItem>
         );
       });
     } else {
-      return (
-        <img
-          src="https://i.stack.imgur.com/kOnzy.gif"
-          alt="loading"
-          width={50}
-          style={{
-            display: "block",
-            marginLeft: "auto",
-            marginRight: "auto",
-          }}
-        />
-      );
+      return <CircularProgress color="inherit" />;
     }
   };
 
   return (
     <div>
-      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth={true}>
+      <Backdrop
+        sx={{
+          color: "#FCFCFC",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+        }}
+        open={open}
+        onClick={handleClose}
+      >
+        {ShowImg()}
+      </Backdrop>
+      {/* <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth={true}>
         <DialogContent
           sx={{
             bgcolor: "#F5F9FD",
@@ -69,7 +79,7 @@ export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
             Close
           </CustomButtonStyle>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

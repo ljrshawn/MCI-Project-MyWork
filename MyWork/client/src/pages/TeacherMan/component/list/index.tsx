@@ -31,8 +31,12 @@ export const TecManList = () => {
       title={<Typography variant="h5">Manages</Typography>}
       headerButtons={() => (
         <>
-          <RefreshButton hideText />
-          <ImportButton hideText inputProps={inputProps} loading={isLoading} />
+          {/* <RefreshButton hideText sx={{ color: "#2ECC71" }} /> */}
+          <ImportButton
+            inputProps={inputProps}
+            loading={isLoading}
+            sx={{ color: "#2ECC71" }}
+          />
           <CustomButton url="/manage/create" value="Add" />
         </>
       )}

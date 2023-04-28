@@ -46,8 +46,17 @@ export default function DataGridCus(fresh: any) {
         renderCell: function render({ row }) {
           return (
             <>
-              <EditButton size="small" recordItemId={row.id} hideText={true} />
-              <DeleteButton hideText recordItemId={row.id} />
+              <EditButton
+                size="small"
+                recordItemId={row.id}
+                hideText={true}
+                sx={{ color: "#2ECC71" }}
+              />
+              <DeleteButton
+                hideText
+                recordItemId={row.id}
+                sx={{ color: "#E74C3C" }}
+              />
             </>
           );
         },
@@ -63,7 +72,7 @@ export default function DataGridCus(fresh: any) {
     <Box
       sx={{
         backgroundColor: "#FCFCFC",
-        height: 400,
+        height: 700,
         width: "100%",
       }}
     >

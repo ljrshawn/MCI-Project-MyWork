@@ -84,14 +84,23 @@ exports.importStudent = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsync(async (req, res, next) => {
-  const users = await User.find();
-  // console.log(Object.entries(users).length);
+  const filter = { role: "student" };
+  // if (req.params.tourId) filter = { tour: req.params.tourId };
+
+  const start = Number(req.query._start);
+  const end = Number(req.query._end);
+  const limit = end - start;
+
+  const query = await User.find(filter).skip(start).limit(limit);
+
+  const users = await User.find(filter);
+
   const total = Object.entries(users).length;
 
   res.set("x-total-count", total);
   res.set("Access-Control-Expose-Headers", "x-total-count");
 
-  res.status(200).json(users);
+  res.status(200).json(query);
 });
 
 exports.deleteUser = (req, res, next) => {

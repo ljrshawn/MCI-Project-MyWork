@@ -19,11 +19,14 @@ class APIFeatures {
   }
 
   sort() {
-    if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(",").join(" ");
+    if (this.queryString._sort) {
+      let sortBy = "";
+      if (this.queryString._order === "desc") {
+        sortBy = "-";
+      }
+      sortBy += this.queryString._sort;
+      console.log(sortBy);
       this.query = this.query.sort(sortBy);
-    } else {
-      this.query = this.query.sort("-createdAt");
     }
 
     return this;
@@ -41,8 +44,8 @@ class APIFeatures {
   }
 
   paginate() {
-    const start = this.queryString._start;
-    const end = this.queryString._end;
+    const start = Number(this.queryString._start);
+    const end = Number(this.queryString._end);
     const limit = end - start;
 
     this.query = this.query.skip(start).limit(limit);

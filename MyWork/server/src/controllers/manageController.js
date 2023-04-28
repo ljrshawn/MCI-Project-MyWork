@@ -5,6 +5,7 @@ const AppError = require("../utils/appError");
 const User = require("../models/userModel");
 const Email = require("../utils/email");
 const userController = require("./userController");
+const APIFeatures = require("../utils/APIFeatures");
 
 const importSend = async (user, statusCode, req, res, next) => {
   const createToken = user.createPasswordActiveToken();
@@ -84,16 +85,22 @@ exports.importStudent = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsync(async (req, res, next) => {
+  console.log(req.query);
   const filter = { role: "student" };
   // if (req.params.tourId) filter = { tour: req.params.tourId };
 
-  const start = Number(req.query._start);
-  const end = Number(req.query._end);
-  const limit = end - start;
+  // const start = Number(req.query._start);
+  // const end = Number(req.query._end);
+  // const limit = end - start;
 
-  const query = await User.find(filter).skip(start).limit(limit);
+  // const query = await User.find(filter).skip(start).limit(limit);
 
   const users = await User.find(filter);
+  const feature = new APIFeatures(User.find(filter), req.query)
+    .sort()
+    .paginate();
+
+  const query = await feature.query;
 
   const total = Object.entries(users).length;
 

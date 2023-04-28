@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useList } from "@pankod/refine-core";
 
-import { Card, ListItem } from "@mui/material";
+import { Card, ListItem, Paper } from "@mui/material";
 
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import PiChart from "./piChartModel";
@@ -62,33 +62,48 @@ export default function VirtualizedList() {
     }
   }
 
+  const width = () => {
+    const wd = document.getElementById("mainField")?.offsetWidth || 1000;
+
+    return wd - 100;
+  };
+
   return (
     <>
       <Card
+        id="mainField"
         sx={{
           backgroundColor: "#FCFCFC",
-          width: 1000,
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
+          width: "100%",
         }}
       >
-        <FixedSizeList
-          height={600}
-          width={1000}
-          itemSize={600}
-          itemCount={itemCount()}
-          overscanCount={5}
-          layout="horizontal"
+        <Paper
+          elevation={0}
+          sx={{
+            backgroundColor: "#FCFCFC",
+            width: width(),
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
         >
-          {renderCol}
-        </FixedSizeList>
-        <ShowTeamMember
-          open={openTeamMember}
-          handleClose={handleTeamMemberClose}
-          id={teamMemberId}
-          name={nameTeamMember}
-        />
+          <FixedSizeList
+            height={600}
+            width={width()}
+            itemSize={600}
+            itemCount={itemCount()}
+            overscanCount={5}
+            layout="horizontal"
+          >
+            {renderCol}
+          </FixedSizeList>
+          <ShowTeamMember
+            open={openTeamMember}
+            handleClose={handleTeamMemberClose}
+            id={teamMemberId}
+            name={nameTeamMember}
+          />
+        </Paper>
       </Card>
     </>
   );

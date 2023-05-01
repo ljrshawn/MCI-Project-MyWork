@@ -34,9 +34,7 @@ exports.addNewRecords = catchAsync(async (req, res, next) => {
     records: userRecords,
   });
 
-  res.status(200).json({
-    status: "success",
-  });
+  res.status(200).json(temRecord);
 });
 
 exports.getUserRecords = catchAsync(async (req, res, next) => {
@@ -46,7 +44,7 @@ exports.getUserRecords = catchAsync(async (req, res, next) => {
     // console.log(typeof JSON.stringify(el));
 
     if (el) {
-      const record = await Record.findById(el);
+      const record = await Record.findById(el.detail);
 
       return record;
     }

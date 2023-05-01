@@ -32,3 +32,9 @@ export interface openDialogProps {
   id?: string;
   name?: string;
 }
+
+export interface openShowAddDialogProps {
+  oriData: any;
+  handleData: (value: any) => void;
+  handleClose: () => void;
+}

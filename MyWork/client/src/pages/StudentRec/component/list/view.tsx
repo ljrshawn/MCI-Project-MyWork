@@ -2,162 +2,281 @@ import React from "react";
 import Paper from "@mui/material/Paper";
 import dayjs from "dayjs";
 
-// import {
-//   ViewState,
-//   EditingState,
-//   IntegratedEditing,
-//   AppointmentModel,
-//   SchedulerDateTime,
-//   ChangeSet,
-// } from "@devexpress/dx-react-scheduler";
-// import {
-//   Scheduler,
-//   Toolbar,
-//   DateNavigator,
-//   Appointments,
-//   TodayButton,
-//   ViewSwitcher,
-//   WeekView,
-//   DayView,
-//   AppointmentForm,
-//   AppointmentTooltip,
-//   DragDropProvider,
-// } from "@devexpress/dx-react-scheduler-material-ui";
+import {
+  ViewState,
+  EditingState,
+  IntegratedEditing,
+  AppointmentModel,
+  SchedulerDateTime,
+  ChangeSet,
+} from "@devexpress/dx-react-scheduler";
+import {
+  Scheduler,
+  Toolbar,
+  DateNavigator,
+  Appointments,
+  TodayButton,
+  ViewSwitcher,
+  WeekView,
+  DayView,
+  AppointmentTooltip,
+  DragDropProvider,
+  ConfirmationDialog,
+} from "@devexpress/dx-react-scheduler-material-ui";
 
-// import { useDataGrid } from "@pankod/refine-mui";
+import { useList } from "@pankod/refine-core";
 
-// export default function CusScheduler() {
-//   const { dataGridProps } = useDataGrid({
-//     hasPagination: false,
-//   });
+import { ShowAdd } from "./showAdd";
+import { LoadingButton } from "@pankod/refine-mui";
+import { ShowEvidence } from "pages/component/chartModel/showEvidence";
 
-//   let id = -1;
-//   const dataIni = () => {
-//     const DI: Array<AppointmentModel> = [];
-//     if (
-//       dataGridProps &&
-//       dataGridProps.rows &&
-//       dataGridProps.rows.length !== 0
-//     ) {
-//       dataGridProps.rows.forEach((el) => {
-//         let d: AppointmentModel = {
-//           title: el.task,
-//           startDate: el.start,
-//           endDate: el.end,
-//           id: ++id,
-//         };
+export default function CusScheduler() {
+  const { data, isLoading } = useList({
+    resource: "records",
+    config: {
+      hasPagination: false,
+    },
+  });
 
-//         DI.push(d);
-//       });
-//     }
-//     return DI;
-//   };
+  let id = -1;
+  const dataIni = () => {
+    const DI: AppointmentModel[] =
+      data?.data.map((el) => {
+        const d: AppointmentModel = {
+          title: el.task,
+          startDate: new Date(el.start),
+          endDate: new Date(el.end),
+          id: el.id,
+          evidence: el.evidence,
+          hour: el.hour,
+        };
 
-//   const [data, setData] = React.useState<Array<AppointmentModel>>(dataIni());
-//   console.log(data);
+        return d;
+      }) || [];
 
-//   const [currentDate, setCurrentDate] = React.useState<SchedulerDateTime>(
-//     dayjs().format()
-//   );
-//   console.log(currentDate);
+    return DI;
+  };
 
-//   const [addedAppointment, setAddedAppointment] = React.useState({});
+  const [schedualData, setSchedualData] = React.useState<AppointmentModel[]>(
+    []
+  );
 
-//   const onCommitChanges = React.useCallback(
-//     (props: ChangeSet) => {
-//       const { added, changed, deleted } = props;
-//       if (added) {
-//         const startingAddedId = data.length > 0 ? id + 1 : 0;
-//         setData([
-//           ...data,
-//           {
-//             id: startingAddedId,
-//             title: added.task,
-//             startDate: added.start,
-//             endDate: added.end,
-//           },
-//         ]);
-//       }
-//       if (changed) {
-//         setData(
-//           data.map((appointment: AppointmentModel) =>
-//             appointment.id && changed[appointment.id]
-//               ? { ...appointment, ...changed[appointment.id] }
-//               : appointment
-//           )
-//         );
-//       }
-//       if (deleted !== undefined) {
-//         setData(data.filter((appointment) => appointment.id !== deleted));
-//       }
-//     },
-//     [setData, data]
-//   );
+  if (data !== undefined && schedualData.length === 0) {
+    setSchedualData(dataIni());
+  }
 
-//   const onAddedAppointmentChange = React.useCallback((appointment: any) => {
-//     setAddedAppointment(appointment);
-//   }, []);
+  const [currentDate, setCurrentDate] = React.useState<SchedulerDateTime>(
+    dayjs().format()
+  );
 
-//   type TimeTableCellProps = {
-//     onDoubleClick: () => void;
-//   };
+  const handleSetSchedualData = (data: any) => {
+    if (data !== undefined) {
+      return setSchedualData([
+        ...schedualData,
+        {
+          id: data.data.id,
+          title: data.data.task,
+          startDate: data.data.start,
+          endDate: data.data.end,
+          evidence: data.data.evidence,
+          hour: data.data.hour,
+        },
+      ]);
+    }
+  };
 
-//   const TimeTableCell = React.useCallback(
-//     React.memo<TimeTableCellProps>(({ onDoubleClick, ...restProps }) => (
-//       <WeekView.TimeTableCell {...restProps} onDoubleClick={onDoubleClick} />
-//     )),
-//     []
-//   );
+  const onCommitChanges = React.useCallback(
+    (props: ChangeSet) => {
+      console.log(props);
 
-//   // const CommandButton = React.useCallback(
-//   //   ({ id, ...restProps }: { id: any }) => {
-//   //     if (id === "deleteButton") {
-//   //       return <AppointmentForm commandButtonComponent={id={id} {...restProps}}  />;
-//   //     }
-//   //     return <AppointmentForm.CommandButtonProps id={id} {...restProps} />;
-//   //   },
-//   //   []
-//   // );
+      const { added, changed, deleted } = props;
+      if (added) {
+        const startingAddedId = schedualData.length > 0 ? String(id + 1) : "0";
+        setSchedualData([
+          ...schedualData,
+          {
+            id: startingAddedId,
+            title: added.task,
+            startDate: added.start,
+            endDate: added.end,
+            evidence: added.evidence,
+            hour: added.hour,
+          },
+        ]);
+      }
+      // if (changed) {
+      //   setSchedualData(
+      //     schedualData.map((appointment: AppointmentModel) =>
+      //       appointment.id && changed[appointment.id]
+      //         ? { ...appointment, ...changed[appointment.id] }
+      //         : appointment
+      //     )
+      //   );
+      // }
+      // if (deleted !== undefined) {
+      //   setSchedualData(
+      //     schedualData.filter((appointment) => appointment.id !== deleted)
+      //   );
+      // }
+    },
+    [schedualData]
+  );
 
-//   return (
-//     <React.Fragment>
-//       <Paper>
-//         <Scheduler data={data} height={600}>
-//           <ViewState
-//             currentDate={currentDate}
-//             onCurrentDateChange={(currentDate) => setCurrentDate(currentDate)}
-//           />
-//           <EditingState
-//             onCommitChanges={onCommitChanges}
-//             addedAppointment={addedAppointment}
-//             onAddedAppointmentChange={onAddedAppointmentChange}
-//           />
+  const WeekTimeTableCell = React.useCallback(
+    React.memo<WeekView.TimeTableCellProps>(
+      ({ onDoubleClick, ...restProps }) => (
+        <WeekView.TimeTableCell
+          {...restProps}
+          onDoubleClick={handleShowAddClickOpen}
+        />
+      )
+    ),
+    []
+  );
 
-//           <IntegratedEditing />
-//           <WeekView
-//             startDayHour={9}
-//             endDayHour={24}
-//             // timeTableCellComponent={TimeTableCell}
-//           />
+  const DayTimeTableCell = React.useCallback(
+    React.memo<DayView.TimeTableCellProps>(
+      ({ onDoubleClick, ...restProps }) => (
+        <DayView.TimeTableCell
+          {...restProps}
+          onDoubleClick={handleShowAddClickOpen}
+        />
+      )
+    ),
+    []
+  );
 
-//           <DayView
-//             startDayHour={9}
-//             endDayHour={24}
-//             // timeTableCellComponent={TimeTableCell}
-//           />
-//           <Toolbar />
-//           <ViewSwitcher />
-//           <DateNavigator />
-//           <TodayButton />
-//           <Appointments />
+  const [openPerEvidence, setOpenPerEvidence] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-//           <AppointmentTooltip showOpenButton />
-//           <AppointmentForm
-//           // commandButtonComponent={CommandButton}
-//           />
-//           <DragDropProvider />
-//         </Scheduler>
-//       </Paper>
-//     </React.Fragment>
-//   );
-// }
+  const [perEvidenceId, setPerEvidenceId] = React.useState("");
+
+  const handlePerEvidenceClose = () => {
+    setOpenPerEvidence(false);
+    setLoading(false);
+  };
+
+  const showEvi = (props: any) => {
+    if (props.evidence[0].name !== "") {
+      return (
+        <>
+          <LoadingButton
+            loading={loading}
+            sx={{
+              color: "#CC2E89",
+            }}
+            onClick={() => {
+              if (props.evidence[0].name !== "") {
+                setLoading(true);
+                setPerEvidenceId(props.id);
+                setOpenPerEvidence(true);
+              }
+            }}
+          >
+            {props.evidence[0].name}
+          </LoadingButton>
+          <ShowEvidence
+            open={openPerEvidence}
+            handleClose={handlePerEvidenceClose}
+            id={perEvidenceId}
+          />
+        </>
+      );
+    }
+  };
+
+  const contentComponent = ({
+    children,
+    appointmentData,
+    ...restProps
+  }: AppointmentTooltip.ContentProps) => {
+    return (
+      <AppointmentTooltip.Content
+        {...restProps}
+        appointmentData={appointmentData}
+        children={showEvi(appointmentData)}
+      ></AppointmentTooltip.Content>
+    );
+  };
+
+  const [openShowAdd, setOpenShowAdd] = React.useState(false);
+  const [openShowData, setShowData] = React.useState(undefined);
+
+  const [showAddId, setShowAddId] = React.useState("");
+  const [nameShowAdd, setNameShowAdd] = React.useState("");
+
+  const handleShowAddClickOpen = (data: any) => {
+    setShowData(data);
+    setOpenShowAdd(true);
+  };
+
+  const handleShowAddClose = () => {
+    setOpenShowAdd(false);
+  };
+
+  const headerComponent = ({
+    appointmentData,
+    onOpenButtonClick,
+    ...restProps
+  }: AppointmentTooltip.HeaderProps) => (
+    <AppointmentTooltip.Header
+      {...restProps}
+      onOpenButtonClick={() => handleShowAddClickOpen(appointmentData)}
+    />
+  );
+
+  return (
+    <React.Fragment>
+      <Paper
+        elevation={0}
+        sx={{
+          backgroundColor: "#FCFCFC",
+        }}
+      >
+        <Scheduler data={schedualData} height={700}>
+          <ViewState
+            currentDate={currentDate}
+            onCurrentDateChange={(currentDate) => setCurrentDate(currentDate)}
+          />
+          <EditingState onCommitChanges={onCommitChanges} />
+
+          <IntegratedEditing />
+          <WeekView
+            startDayHour={9}
+            endDayHour={24}
+            timeTableCellComponent={WeekTimeTableCell}
+          />
+
+          <DayView
+            startDayHour={9}
+            endDayHour={24}
+            timeTableCellComponent={DayTimeTableCell}
+          />
+          <Toolbar />
+          <ViewSwitcher />
+          <DateNavigator />
+          <TodayButton />
+
+          <ConfirmationDialog ignoreCancel />
+          <Appointments />
+
+          <AppointmentTooltip
+            showOpenButton
+            showDeleteButton
+            contentComponent={contentComponent}
+            headerComponent={headerComponent}
+          />
+
+          <ShowAdd
+            open={openShowAdd}
+            handleClose={handleShowAddClose}
+            oriData={openShowData}
+            handleData={handleSetSchedualData}
+          />
+
+          <DragDropProvider />
+        </Scheduler>
+      </Paper>
+    </React.Fragment>
+  );
+}

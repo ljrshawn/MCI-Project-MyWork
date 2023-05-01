@@ -4,8 +4,13 @@ import { useForm } from "@pankod/refine-react-hook-form";
 import { FieldValues } from "react-hook-form";
 
 import AddNewRecordsForm from "./addNewRecordsForm";
+import { openShowAddDialogProps } from "pages/component/interface/form";
 
-export default function AddNewRecords() {
+export default function AddNewRecords({
+  oriData,
+  handleData,
+  handleClose,
+}: openShowAddDialogProps) {
   const {
     refineCore: { onFinish, formLoading },
     register,
@@ -14,17 +19,32 @@ export default function AddNewRecords() {
   } = useForm({
     refineCoreProps: {
       resource: "records",
+      onMutationSuccess: (data, variables, context) => {
+        if (data !== undefined) {
+          handleData(data);
+          handleClose();
+        }
+      },
     },
   });
 
-  const [start, setStart] = React.useState<Dayjs | null>(dayjs());
-  const [end, setEnd] = React.useState<Dayjs | null>(dayjs());
-  const [hour, setHour] = React.useState("0");
-  const [task, setTask] = React.useState("");
-  const [evidenceImg, setEvidenceImage] = React.useState({
-    name: "",
-    url: "",
-  });
+  const [start, setStart] = React.useState<Dayjs | null>(
+    dayjs(oriData?.startDate)
+  );
+
+  const [end, setEnd] = React.useState<Dayjs | null>(dayjs(oriData?.endDate));
+  const [hour, setHour] = React.useState(
+    String(((end?.diff(start, "minute") ?? 0) / 60).toFixed(2)) || "0"
+  );
+  const [task, setTask] = React.useState(oriData?.title || "");
+  const [evidenceImg, setEvidenceImage] = React.useState(
+    oriData?._reactName !== "onDoubleClick"
+      ? oriData?.evidence[0]
+      : {
+          name: "",
+          url: "",
+        }
+  );
 
   const handleStartTime = (newValue: any) => {
     setStart(newValue);

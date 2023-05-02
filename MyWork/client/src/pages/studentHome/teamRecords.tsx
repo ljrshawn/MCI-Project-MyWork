@@ -27,6 +27,13 @@ export const TeamRecords = ({
     plugins: {
       legend: {
         position: "right" as const,
+        labels: {
+          font: {
+            size: 14,
+          },
+          useBorderRadius: true,
+          borderRadius: 5,
+        },
       },
     },
     onClick: handleClickOpen,

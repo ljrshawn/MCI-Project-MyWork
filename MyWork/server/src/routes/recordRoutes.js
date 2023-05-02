@@ -11,7 +11,11 @@ router
   .get(authController.protect, recordsController.getUserRecords);
 
 router
-  .route("/:id")
+  .route("/img/")
+  .get(authController.protect, recordsController.getRecordsEvidence);
+
+router
+  .route("/img/:id")
   .get(authController.protect, recordsController.getRecordsEvidence);
 
 module.exports = router;

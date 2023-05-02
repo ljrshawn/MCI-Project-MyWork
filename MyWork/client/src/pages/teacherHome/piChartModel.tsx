@@ -5,18 +5,19 @@ import {
   Card,
   CardHeader,
   CardContent,
-  IconButton,
+  Button,
 } from "@mui/material";
-
-import DetailsIcon from "@mui/icons-material/Details";
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { openDialogProps } from "pages/component/interface/form";
+import {
+  openDialogProps,
+  openDetailDialogProps,
+} from "pages/component/interface/form";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-interface props extends openDialogProps {
+interface props extends openDialogProps, openDetailDialogProps {
   data: any;
 }
 
@@ -25,6 +26,8 @@ export default function PiChart({
   open,
   handleClickOpen,
   handleClose,
+  detailOpen,
+  handleDetailOpen,
 }: props) {
   const options = {
     aspectRatio: 1,
@@ -34,6 +37,13 @@ export default function PiChart({
     plugins: {
       legend: {
         position: "top" as const,
+        labels: {
+          font: {
+            size: 14,
+          },
+          useBorderRadius: true,
+          borderRadius: 5,
+        },
       },
     },
     onClick: handleClickOpen,
@@ -79,21 +89,28 @@ export default function PiChart({
       sx={{
         backgroundColor: "#FCFCFC",
         height: "100%",
-        width: "80%",
+        width: "70%",
       }}
     >
       <CardHeader
         sx={{ display: "flex", flexWrap: "wrap" }}
-        title={<Typography variant="h6">{`Team ${data[0].team}`}</Typography>}
-        action={
-          <IconButton aria-label="Detail" size="small">
-            <DetailsIcon
-              fontSize="small"
-              sx={{
-                color: "#A67CDF",
-              }}
-            />
-          </IconButton>
+        title={
+          <Button
+            variant="text"
+            sx={{
+              color: "#2E89CC",
+              ":hover": {
+                color: "#2E89CC",
+                opacity: 0.6,
+                backgroundColor: "#E5F0F9",
+              },
+            }}
+            onClick={() => {
+              handleDetailOpen(data[0].team);
+            }}
+          >
+            <Typography variant="h6">{`Team ${data[0].team}`}</Typography>
+          </Button>
         }
       />
       <CardContent>

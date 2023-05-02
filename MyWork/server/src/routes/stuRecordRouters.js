@@ -17,4 +17,8 @@ router
   .route("/:id")
   .get(authController.protect, recordsController.getStuMemRecords);
 
+router
+  .route("/teamDetail/:team")
+  .get(authController.protect, recordsController.getTeamRecords);
+
 module.exports = router;

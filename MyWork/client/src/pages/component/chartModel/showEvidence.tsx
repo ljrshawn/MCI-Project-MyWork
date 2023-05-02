@@ -16,7 +16,7 @@ import { CustomButtonStyle } from "pages/component/button/cusButtonStyle";
 
 export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
   const { data, isLoading } = useList({
-    resource: `records/${id}`,
+    resource: `records/img/${id}`,
     config: {
       hasPagination: false,
     },
@@ -24,23 +24,27 @@ export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
 
   const ShowImg = () => {
     if (open && data?.data[0] !== null) {
-      return data?.data.map((el) => {
-        return (
-          <ImageListItem key={el.fullDate}>
-            <img
-              src={el.evidence[0].url}
-              alt={el.fullDate}
-              loading="lazy"
-              style={{
-                width: "50%",
-                display: "block",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            />
-          </ImageListItem>
-        );
-      });
+      let src;
+      if (data?.data[0].evidence[0].name !== "") {
+        src = data?.data[0].evidence[0].url;
+      } else {
+        src =
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
+      }
+
+      return (
+        <img
+          src={src}
+          alt={data?.data[0].fullDate}
+          loading="lazy"
+          style={{
+            width: "50%",
+            display: "block",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+      );
     } else {
       return <CircularProgress color="inherit" />;
     }

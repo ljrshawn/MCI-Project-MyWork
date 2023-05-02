@@ -30,7 +30,15 @@ export interface openDialogProps {
   handleClickOpen?: (event: any, elements: any, chart: any) => void;
   handleClose?: () => void;
   id?: string;
+  number?: string;
   name?: string;
+}
+
+export interface openDetailDialogProps {
+  detailOpen: boolean;
+  handleDetailOpen: (elements: any) => void;
+  handleDetailClose?: () => void;
+  number?: string;
 }
 
 export interface openShowAddDialogProps {

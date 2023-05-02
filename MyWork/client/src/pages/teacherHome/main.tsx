@@ -6,6 +6,7 @@ import { Card, ListItem, Paper } from "@mui/material";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import PiChart from "./piChartModel";
 import { ShowTeamMember } from "pages/component/chartModel/showTeamMember";
+import { ShowTeam } from "pages/component/chartModel/showTeam";
 
 export default function VirtualizedList() {
   const { data, isLoading } = useList({
@@ -39,6 +40,19 @@ export default function VirtualizedList() {
     setOpenTeamMember(false);
   };
 
+  const [openTeam, setOpenTeam] = React.useState(false);
+
+  const [teamNumber, setTeamNumber] = React.useState("");
+
+  const handleTeamClickOpen = (e: any) => {
+    setTeamNumber(e);
+    setOpenTeam(true);
+  };
+
+  const handleTeamClose = () => {
+    setOpenTeam(false);
+  };
+
   function renderCol(props: ListChildComponentProps) {
     const { index, style } = props;
 
@@ -54,6 +68,8 @@ export default function VirtualizedList() {
             data={data?.data[index]}
             open={openTeamMember}
             handleClickOpen={handleTeamMemberClickOpen}
+            detailOpen={openTeam}
+            handleDetailOpen={handleTeamClickOpen}
           />
         </ListItem>
       );
@@ -102,6 +118,12 @@ export default function VirtualizedList() {
             handleClose={handleTeamMemberClose}
             id={teamMemberId}
             name={nameTeamMember}
+          />
+          <ShowTeam
+            detailOpen={openTeam}
+            handleDetailOpen={handleTeamClickOpen}
+            handleDetailClose={handleTeamClose}
+            number={teamNumber}
           />
         </Paper>
       </Card>

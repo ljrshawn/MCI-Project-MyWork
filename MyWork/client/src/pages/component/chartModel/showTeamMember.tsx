@@ -6,7 +6,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import { openDialogProps } from "pages/component/interface/form";
 import { CustomButtonStyle } from "pages/component/button/cusButtonStyle";
 import { PerRecords } from "../../studentHome/personalRecord";
-import { ShowEvidence } from "./showEvidence";
+import ShowDateDetail from "./showDateDetail";
 
 export const ShowTeamMember = ({
   open,
@@ -14,22 +14,28 @@ export const ShowTeamMember = ({
   id,
   name,
 }: openDialogProps) => {
-  const [openPerEvidence, setOpenPerEvidence] = React.useState(false);
+  const [openDateDetail, setOpenDateDetail] = React.useState(false);
 
-  const [perEvidenceId, setPerEvidenceId] = React.useState("");
+  const [dateDetailQuery, setDateDetailQuery] = React.useState<{
+    userId: string;
+    year: string;
+    month: string;
+    date: string;
+  }>({ userId: "", year: "", month: "", date: "" });
 
-  const handlePerEvidenceClickOpen = (
-    event: any,
-    elements: any,
-    chart: any
-  ) => {
-    setPerEvidenceId(elements[0].element.$context.raw.id);
+  const handleDateDetailOpen = (event: any, elements: any, chart: any) => {
+    setDateDetailQuery({
+      userId: elements[0].element.$context.raw.userId,
+      year: elements[0].element.$context.raw.year,
+      month: elements[0].element.$context.raw.month,
+      date: elements[0].element.$context.raw.date,
+    });
 
-    setOpenPerEvidence(true);
+    setOpenDateDetail(true);
   };
 
-  const handlePerEvidenceClose = () => {
-    setOpenPerEvidence(false);
+  const handleDateDetailClose = () => {
+    setOpenDateDetail(false);
   };
 
   return (
@@ -43,14 +49,15 @@ export const ShowTeamMember = ({
           <PerRecords
             resource={`stu_records/${id}`}
             title={`${name}'s Workload`}
-            handleClickOpen={handlePerEvidenceClickOpen}
+            handleClickOpen={handleDateDetailOpen}
+          />
+          <ShowDateDetail
+            open={openDateDetail}
+            handleClose={handleDateDetailClose}
+            query={dateDetailQuery}
           />
         </DialogContent>
-        <ShowEvidence
-          open={openPerEvidence}
-          handleClose={handlePerEvidenceClose}
-          id={perEvidenceId}
-        />
+
         <DialogActions
           sx={{
             bgcolor: "#F5F9FD",

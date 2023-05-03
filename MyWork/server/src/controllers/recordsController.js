@@ -213,6 +213,7 @@ exports.getTeamRecords = catchAsync(async (req, res, next) => {
     }
     return {
       name: user.firstName,
+      userId: user.id,
       records: send,
     };
   });
@@ -220,4 +221,24 @@ exports.getTeamRecords = catchAsync(async (req, res, next) => {
   const members = await Promise.all(membersPromises);
 
   res.status(200).json(members);
+});
+
+exports.getDateDetail = catchAsync(async (req, res, next) => {
+  const { query } = req;
+
+  const user = await User.findById(query.userId);
+  const filter = user.records.filter(
+    (el) =>
+      String(el.year) === query.year &&
+      String(el.month) === query.month &&
+      String(el.date) === query.date
+  );
+  const promises = filter.map(async (el) => {
+    if (el) {
+      const record = await Record.findById(el.detail);
+      return record;
+    }
+  });
+  const records = await Promise.all(promises);
+  res.status(200).json(records);
 });

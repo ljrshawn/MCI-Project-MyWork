@@ -6,25 +6,31 @@ import { PerRecords } from "./personalRecord";
 import { TeamRecords } from "./teamRecords";
 import { CustomButton } from "pages/component/button/newPageButton";
 import { ShowTeamMember } from "../component/chartModel/showTeamMember";
-import { ShowEvidence } from "pages/component/chartModel/showEvidence";
+import ShowDateDetail from "pages/component/chartModel/showDateDetail";
 
 export const StudentHome = () => {
-  const [openPerEvidence, setOpenPerEvidence] = React.useState(false);
+  const [openDateDetail, setOpenDateDetail] = React.useState(false);
 
-  const [perEvidenceId, setPerEvidenceId] = React.useState("");
+  const [dateDetailQuery, setDateDetailQuery] = React.useState<{
+    userId: string;
+    year: string;
+    month: string;
+    date: string;
+  }>({ userId: "", year: "", month: "", date: "" });
 
-  const handlePerEvidenceClickOpen = (
-    event: any,
-    elements: any,
-    chart: any
-  ) => {
-    setPerEvidenceId(elements[0].element.$context.raw.id);
+  const handleDateDetailOpen = (event: any, elements: any, chart: any) => {
+    setDateDetailQuery({
+      userId: elements[0].element.$context.raw.userId,
+      year: elements[0].element.$context.raw.year,
+      month: elements[0].element.$context.raw.month,
+      date: elements[0].element.$context.raw.date,
+    });
 
-    setOpenPerEvidence(true);
+    setOpenDateDetail(true);
   };
 
-  const handlePerEvidenceClose = () => {
-    setOpenPerEvidence(false);
+  const handleDateDetailClose = () => {
+    setOpenDateDetail(false);
   };
 
   const [openTeamMember, setOpenTeamMember] = React.useState(false);
@@ -58,12 +64,12 @@ export const StudentHome = () => {
       <PerRecords
         resource="stu_records"
         title="My Workload"
-        handleClickOpen={handlePerEvidenceClickOpen}
+        handleClickOpen={handleDateDetailOpen}
       />
-      <ShowEvidence
-        open={openPerEvidence}
-        handleClose={handlePerEvidenceClose}
-        id={perEvidenceId}
+      <ShowDateDetail
+        open={openDateDetail}
+        handleClose={handleDateDetailClose}
+        query={dateDetailQuery}
       />
       <TeamRecords
         open={openTeamMember}

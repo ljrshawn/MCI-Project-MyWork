@@ -6,6 +6,7 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import { openDetailDialogProps } from "pages/component/interface/form";
 import { CustomButtonStyle } from "pages/component/button/cusButtonStyle";
 import { PerRecords } from "../../studentHome/personalRecord";
+import ShowDateDetail from "./showDateDetail";
 
 export const ShowTeam = ({
   detailOpen,
@@ -13,6 +14,30 @@ export const ShowTeam = ({
   handleDetailClose,
   number,
 }: openDetailDialogProps) => {
+  const [openDateDetail, setOpenDateDetail] = React.useState(false);
+
+  const [dateDetailQuery, setDateDetailQuery] = React.useState<{
+    userId: string;
+    year: string;
+    month: string;
+    date: string;
+  }>({ userId: "", year: "", month: "", date: "" });
+
+  const handleDateDetailOpen = (event: any, elements: any, chart: any) => {
+    setDateDetailQuery({
+      userId: elements[0].element.$context.raw.userId,
+      year: elements[0].element.$context.raw.year,
+      month: elements[0].element.$context.raw.month,
+      date: elements[0].element.$context.raw.date,
+    });
+
+    setOpenDateDetail(true);
+  };
+
+  const handleDateDetailClose = () => {
+    setOpenDateDetail(false);
+  };
+
   return (
     <div>
       <Dialog
@@ -29,7 +54,12 @@ export const ShowTeam = ({
           <PerRecords
             resource={`stu_records/teamDetail/${number}`}
             title={`Team ${number}'s Workload`}
-            // handleClickOpen={handlePerEvidenceClickOpen}
+            handleClickOpen={handleDateDetailOpen}
+          />
+          <ShowDateDetail
+            open={openDateDetail}
+            handleClose={handleDateDetailClose}
+            query={dateDetailQuery}
           />
         </DialogContent>
 

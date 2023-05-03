@@ -11,6 +11,9 @@ router
   .get(authController.protect, recordsController.getUserRecords);
 
 router
+  .route("/dateDetail/")
+  .get(authController.protect, recordsController.getDateDetail);
+router
   .route("/img/")
   .get(authController.protect, recordsController.getRecordsEvidence);
 

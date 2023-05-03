@@ -24,12 +24,18 @@ export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
 
   const ShowImg = () => {
     if (open && data?.data[0] !== null) {
-      let src;
+      let src, style;
       if (data?.data[0].evidence[0].name !== "") {
         src = data?.data[0].evidence[0].url;
+        style = {
+          width: "50%",
+        };
       } else {
         src =
           "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png";
+        style = {
+          width: "20%",
+        };
       }
 
       return (
@@ -38,7 +44,7 @@ export const ShowEvidence = ({ open, handleClose, id }: openDialogProps) => {
           alt={data?.data[0].fullDate}
           loading="lazy"
           style={{
-            width: "50%",
+            ...style,
             display: "block",
             marginLeft: "auto",
             marginRight: "auto",

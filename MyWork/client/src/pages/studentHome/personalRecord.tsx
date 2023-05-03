@@ -108,9 +108,17 @@ export const PerRecords = ({
             return {
               label: `${element.name}'s Workload`,
               data: element.records.map((el: any) => {
-                return { x: el.fullDate.slice(5), y: el.hour, id: el.id };
+                return {
+                  x: el.fullDate.slice(5),
+                  y: el.hour,
+                  id: el.id,
+                  userId: element.userId,
+                  year: el.year,
+                  month: el.month,
+                  date: el.date,
+                };
               }),
-              backgroundColor: backgroundColor[index],
+              backgroundColor: backgroundColor[index % 6],
               barPercentage: 0.5,
             };
           }) || [],
@@ -122,7 +130,15 @@ export const PerRecords = ({
           {
             label: "Workload",
             data: data?.data.map((el) => {
-              return { x: el.fullDate.slice(5), y: el.hour, id: el.id };
+              return {
+                x: el.fullDate.slice(5),
+                y: el.hour,
+                id: el.id,
+                userId: el.hostId,
+                year: el.year,
+                month: el.month,
+                date: el.date,
+              };
             }),
             backgroundColor: "rgba(255, 99, 132, 0.8)",
             barPercentage: 0.5,

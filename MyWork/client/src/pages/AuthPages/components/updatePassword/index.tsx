@@ -26,6 +26,8 @@ import {
 import { layoutStyles, titleStyles } from "../../style";
 import { FormPropsType } from "../../index";
 import Logo from "pages/AuthPages/Logo";
+import axios from "axios";
+import { SERVER_ADDRESS } from "utils/config";
 
 type UpdatePasswordProps = UpdatePasswordPageProps<
   BoxProps,
@@ -51,48 +53,62 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
 
   const { mutate: update, isLoading } =
     useUpdatePassword<UpdatePasswordFormTypes>();
+
   const translate = useTranslate();
+
+  const token = window.location.pathname.split("/")[2];
 
   const Content = (
     <Card {...(contentProps ?? {})}>
       <CardContent sx={{ paddingX: "32px" }}>
         <Typography
-          component='h1'
-          variant='h5'
-          align='center'
+          component="h1"
+          variant="h5"
+          align="center"
           style={titleStyles}
-          color='primary'
+          color="primary"
         >
           {translate("pages.updatePassword.title", "Set New Password")}
         </Typography>
         <Box
-          component='form'
+          component="form"
           onSubmit={handleSubmit((data) => {
             if (onSubmit) {
               return onSubmit(data);
             }
-
-            return update(data);
+            axios
+              .patch(SERVER_ADDRESS + `/user/resetPassword/${token}`, {
+                password: data.password,
+              })
+              .then(function (response) {
+                // response.data.remember = data.remember;
+                // console.log(response.data);
+                return update(response.data);
+              })
+              .catch(function (error) {
+                // console.log(error.response);
+                return update(error);
+              });
           })}
-          gap='16px'
+          gap="16px"
         >
           <TextField
             {...register("password", {
               required: true,
             })}
-            id='password'
-            margin='normal'
+            id="password"
+            margin="normal"
             fullWidth
-            name='password'
+            name="password"
             label={translate(
               "pages.updatePassword.fields.password",
               "New Password"
             )}
             helperText={errors?.password?.message}
             error={!!errors?.password}
-            type='password'
-            placeholder='●●●●●●●●'
-            autoComplete='current-password'
+            type="password"
+            placeholder="●●●●●●●●"
+            autoComplete="current-password"
           />
 
           <TextField
@@ -108,25 +124,25 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
                 return true;
               },
             })}
-            id='confirmPassword'
-            margin='normal'
+            id="confirmPassword"
+            margin="normal"
             fullWidth
-            name='confirmPassword'
+            name="confirmPassword"
             label={translate(
               "pages.updatePassword.fields.confirmPassword",
               "Confirm New Password"
             )}
             helperText={errors?.confirmPassword?.message}
             error={!!errors?.confirmPassword}
-            type='password'
-            placeholder='●●●●●●●●'
-            autoComplete='current-confirm-password'
+            type="password"
+            placeholder="●●●●●●●●"
+            autoComplete="current-confirm-password"
           />
 
           <Button
-            type='submit'
+            type="submit"
             fullWidth
-            variant='contained'
+            variant="contained"
             sx={{
               mt: "8px",
             }}
@@ -141,10 +157,10 @@ export const UpdatePasswordPage: React.FC<UpdatePasswordProps> = ({
 
   return (
     <>
-      <Box component='div' style={layoutStyles} {...(wrapperProps ?? {})}>
+      <Box component="div" style={layoutStyles} {...(wrapperProps ?? {})}>
         <Container
-          component='main'
-          maxWidth='xs'
+          component="main"
+          maxWidth="xs"
           sx={{
             display: "flex",
             flexDirection: "column",

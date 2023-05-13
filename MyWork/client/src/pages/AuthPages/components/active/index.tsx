@@ -1,7 +1,7 @@
 import * as React from "react";
 import {
-  ForgotPasswordPageProps,
-  ForgotPasswordFormTypes,
+  UpdatePasswordFormTypes,
+  UpdatePasswordPageProps,
 } from "@pankod/refine-core";
 import { useForm } from "@pankod/refine-react-hook-form";
 import {
@@ -14,31 +14,28 @@ import {
   CardContent,
   BoxProps,
   CardContentProps,
-  Link as MuiLink,
 } from "@mui/material";
 
 import {
   BaseRecord,
   HttpError,
   useTranslate,
-  useRouterContext,
-  useForgotPassword,
+  useUpdatePassword,
 } from "@pankod/refine-core";
 
 import { layoutStyles, titleStyles } from "../../style";
 import { FormPropsType } from "../../index";
 import Logo from "pages/AuthPages/Logo";
 import axios from "axios";
-import { CLIENT_ADDRESS, SERVER_ADDRESS } from "utils/config";
+import { SERVER_ADDRESS } from "utils/config";
 
-type ForgotPasswordProps = ForgotPasswordPageProps<
+type UpdatePasswordProps = UpdatePasswordPageProps<
   BoxProps,
   CardContentProps,
   FormPropsType
 >;
 
-export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
-  loginLink,
+export const ActivePage: React.FC<UpdatePasswordProps> = ({
   wrapperProps,
   contentProps,
   renderContent,
@@ -47,16 +44,19 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
   const { onSubmit, ...useFormProps } = formProps || {};
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<BaseRecord, HttpError, ForgotPasswordFormTypes>({
+  } = useForm<BaseRecord, HttpError, UpdatePasswordFormTypes>({
     ...useFormProps,
   });
 
-  const { mutate, isLoading } = useForgotPassword<ForgotPasswordFormTypes>();
+  const { mutate: update, isLoading } =
+    useUpdatePassword<UpdatePasswordFormTypes>();
+
   const translate = useTranslate();
-  const { Link } = useRouterContext();
-  const [loading, setLoading] = React.useState(false);
+
+  const token = window.location.pathname.split("/")[2];
 
   const Content = (
     <Card {...(contentProps ?? {})}>
@@ -68,7 +68,7 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
           style={titleStyles}
           color="primary"
         >
-          {translate("pages.forgotPassword.title", "Forgot your password?")}
+          {translate("pages.active.title", "Active Account")}
         </Typography>
         <Box
           component="form"
@@ -76,64 +76,69 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
             if (onSubmit) {
               return onSubmit(data);
             }
-            setLoading(true);
-
             axios
-              .post(SERVER_ADDRESS + "/user/forgotPassword", {
-                email: data.email,
+              .patch(SERVER_ADDRESS + `/user/active/${token}`, {
+                password: data.password,
               })
               .then(function (response) {
                 // response.data.remember = data.remember;
                 // console.log(response.data);
-                setLoading(false);
-                return mutate(response.data);
+                return update(response.data);
               })
               .catch(function (error) {
                 // console.log(error.response);
-                return mutate(error);
+                return update(error);
               });
           })}
           gap="16px"
         >
           <TextField
-            {...register("email", {
+            {...register("password", {
               required: true,
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: translate(
-                  "pages.register.errors.validEmail",
-                  "Invalid email address"
-                ),
-              },
             })}
-            id="email"
+            id="password"
             margin="normal"
             fullWidth
-            label={translate("pages.forgotPassword.fields.email", "Email")}
-            name="email"
-            type="email"
-            error={!!errors.email}
-            autoComplete="email"
+            name="password"
+            label={translate(
+              "pages.updatePassword.fields.password",
+              "New Password"
+            )}
+            helperText={errors?.password?.message}
+            error={!!errors?.password}
+            type="password"
+            placeholder="●●●●●●●●"
+            autoComplete="current-password"
           />
-          {loginLink ?? (
-            <Box textAlign="right">
-              <Typography variant="body2" component="span">
-                {translate(
-                  "pages.register.buttons.haveAccount",
-                  "Have an account?"
-                )}
-              </Typography>{" "}
-              <MuiLink
-                variant="body2"
-                component={Link}
-                underline="none"
-                to="/login"
-                fontWeight="bold"
-              >
-                {translate("pages.login.signin", "Sign in")}
-              </MuiLink>
-            </Box>
-          )}
+
+          <TextField
+            {...register("confirmPassword", {
+              required: true,
+              validate: (value?: string) => {
+                if (watch("password") !== value) {
+                  return translate(
+                    "pages.updatePassword.errors.confirmPasswordNotMatch",
+                    "Passwords do not match"
+                  );
+                }
+                return true;
+              },
+            })}
+            id="confirmPassword"
+            margin="normal"
+            fullWidth
+            name="confirmPassword"
+            label={translate(
+              "pages.updatePassword.fields.confirmPassword",
+              "Confirm New Password"
+            )}
+            helperText={errors?.confirmPassword?.message}
+            error={!!errors?.confirmPassword}
+            type="password"
+            placeholder="●●●●●●●●"
+            autoComplete="current-confirm-password"
+          />
+
           <Button
             type="submit"
             fullWidth
@@ -141,12 +146,9 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
             sx={{
               mt: "8px",
             }}
-            disabled={loading}
+            disabled={isLoading}
           >
-            {translate(
-              "pages.forgotPassword.buttons.submit",
-              "Send reset instructions"
-            )}
+            {translate("pages.updatePassword.buttons.submit", "Update")}
           </Button>
         </Box>
       </CardContent>
@@ -180,28 +182,5 @@ export const ForgotPasswordPage: React.FC<ForgotPasswordProps> = ({
         </Container>
       </Box>
     </>
-  );
-};
-
-export const EmailSend = () => {
-  const [seconds, setSeconds] = React.useState(3);
-
-  const changeSeconds = () => {
-    setSeconds(seconds - 1);
-  };
-
-  setInterval(changeSeconds, 1000);
-
-  const redirect = () => {
-    window.location.href = CLIENT_ADDRESS;
-  };
-
-  setTimeout(redirect, 3000);
-
-  return (
-    <center>
-      <h2>Your rest password email have been sent, please check your email!</h2>
-      <h3>After {seconds} seconds, jump to Login page...</h3>
-    </center>
   );
 };

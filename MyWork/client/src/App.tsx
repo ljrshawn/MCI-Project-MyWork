@@ -28,6 +28,7 @@ import {
   Nodata,
 } from "pages";
 import { AuthPage } from "../src/pages/AuthPages";
+import { ActivePage, EmailSend } from "pages/AuthPages/components";
 import { SERVER_ADDRESS } from "utils/config";
 
 // const igm = require.resolve("./data/img");
@@ -110,16 +111,13 @@ function App() {
       // You can handle the login process according to your needs.
       // If the process is successful.
       if (token) {
-        const email = data.user.email;
-        const name = data.user.name;
-        const role = data.user.role;
-        const photo = data.user.photo;
+        const { email, firstName, role, photo } = data.user;
 
         localStorage.setItem(
           "user",
           JSON.stringify({
             email,
-            name,
+            name: firstName,
             role,
             avatar: photo,
           })
@@ -139,16 +137,13 @@ function App() {
 
       // If the process is successful.
       if (token) {
-        const email = data.user.email;
-        const name = data.user.name;
-        const role = data.user.role;
-        const photo = data.user.photo;
+        const { email, firstName, role, photo } = data.user;
 
         localStorage.setItem(
           "user",
           JSON.stringify({
             email,
-            name,
+            name: firstName,
             role,
             avatar: photo,
           })
@@ -164,42 +159,27 @@ function App() {
       return Promise.reject();
     },
     // --
-    forgotPassword: async ({ email }) => {
+    forgotPassword: async (data) => {
       // You can handle the reset password process according to your needs.
 
       // If process is successful.
-      return Promise.resolve();
+      if (data.status === "success") {
+        return Promise.resolve("/email-send");
+      }
 
-      return Promise.reject();
+      return Promise.reject({ message: data.message });
     },
     // --
-    updatePassword: async ({ password, confirmPassword }) => {
+    updatePassword: async ({ status, response }) => {
       // You can handle the update password process according to your needs.
 
+      if (status !== "success") {
+        return Promise.reject({ message: response.data.message });
+      }
       // If the process is successful.
-      return Promise.resolve();
-
-      return Promise.reject();
+      return Promise.resolve("/login");
     },
 
-    // Google login
-    // login: ({ credential }: CredentialResponse) => {
-    //   const profileObj = credential ? parseJwt(credential) : null;
-
-    //   if (profileObj) {
-    //     localStorage.setItem(
-    //       "user",
-    //       JSON.stringify({
-    //         ...profileObj,
-    //         avatar: profileObj.picture,
-    //       })
-    //     );
-    //   }
-
-    //   localStorage.setItem("token", `${credential}`);
-
-    //   return Promise.resolve();
-    // },
     logout: () => {
       const token = localStorage.getItem("token");
 
@@ -210,11 +190,6 @@ function App() {
 
         setResource(resources());
         setHome(homes());
-
-        // Google login token
-        // window.google?.accounts.id.revoke(token, () => {
-        //   return Promise.resolve();
-        // });
       }
 
       return Promise.resolve();
@@ -258,7 +233,7 @@ function App() {
             routes: [
               {
                 path: "/active/:token",
-                element: <AuthPage type="updatePassword" />,
+                element: <ActivePage />,
               },
               {
                 path: "/register",
@@ -269,8 +244,12 @@ function App() {
                 element: <AuthPage type="forgotPassword" />,
               },
               {
-                path: "/update-password",
+                path: "/update-password/:token",
                 element: <AuthPage type="updatePassword" />,
+              },
+              {
+                path: "/email-send",
+                element: <EmailSend />,
               },
             ],
           }}

@@ -85,7 +85,6 @@ exports.importStudent = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllStudents = catchAsync(async (req, res, next) => {
-  console.log(req.query);
   const filter = { role: "student" };
   // if (req.params.tourId) filter = { tour: req.params.tourId };
 
@@ -141,6 +140,8 @@ exports.updateStudents = catchAsync(async (req, res, next) => {
   const { team } = await User.findById(req.params.id);
 
   const filteredBody = filterObj(req.body, "team", "tag");
+  console.log(req.body);
+  // console.log(filteredBody);
   await User.findByIdAndUpdate(req.params.id, filteredBody);
 
   req.user = await User.findById(req.params.id);

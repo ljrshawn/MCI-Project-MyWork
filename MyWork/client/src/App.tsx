@@ -32,6 +32,7 @@ import { ActivePage, EmailSend } from "pages/AuthPages/components";
 import { SERVER_ADDRESS } from "utils/config";
 
 // const igm = require.resolve("./data/img");
+
 const axiosInstance = axios.create();
 
 axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {

@@ -50,7 +50,6 @@ app.use(
 // 2) ROUTES
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/manage", manageRouter);
-// app.use("/active/:token", manageRouter);
 app.use("/api/v1/records", recordRouter);
 app.use("/api/v1/stu_records", stuRecordRouter);
 app.use("/api/v1/teams", teamRouter);

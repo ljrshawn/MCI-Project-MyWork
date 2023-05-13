@@ -41,6 +41,7 @@ export const TecManEdit = () => {
       title={
         <Typography variant="h5">Edit {samplesData?.studentId}</Typography>
       }
+      headerButtons={<></>}
       deleteButtonProps={{ size: "small" }}
       saveButtonProps={saveButtonProps}
     >

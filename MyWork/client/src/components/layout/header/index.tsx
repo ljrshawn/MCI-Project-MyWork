@@ -47,15 +47,12 @@ export const Header: React.FC = () => {
             alignItems="center"
             justifyContent="center"
           >
-            {user?.name ? (
-              <Typography variant="subtitle2">{user?.name}</Typography>
+            {user?.firstName ? (
+              <Typography variant="subtitle2">{user?.firstName}</Typography>
             ) : null}
             {user?.avatar ? (
-              // <Avatar src={user?.avatar} alt={user?.name} />
-              <Avatar
-                src={require(`../../../data/img/${user?.avatar}`)}
-                alt={user?.name}
-              />
+              // <Avatar src={user?.avatar} alt={user?.firstName} />
+              <Avatar src={user?.avatar} alt={user?.firstName} />
             ) : null}
           </Stack>
         </Stack>

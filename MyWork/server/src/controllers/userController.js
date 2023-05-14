@@ -1,3 +1,4 @@
+const cloudinary = require("cloudinary");
 const User = require("../models/userModel");
 // const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
@@ -50,6 +51,39 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     status: "success",
     data: null,
   });
+});
+
+exports.getProfile = catchAsync(async (req, res, next) => {
+  res.status(200).json([req.user]);
+});
+
+exports.updateProfile = catchAsync(async (req, res, next) => {
+  const { img } = req.body;
+
+  await cloudinary.v2.config({
+    cloud_name: "dp9citrja",
+    api_key: "637946566878942",
+    api_secret: "wg89KDP53zC37hz9DaWAtih6Ofc",
+  });
+
+  const options = {
+    responsive_breakpoints: {
+      create_derived: true,
+      bytes_step: 20000,
+      min_width: 200,
+      max_width: 1000,
+    },
+    folder: "MyWork/User",
+    public_id: `${req.user.studentId}`,
+  };
+
+  await cloudinary.v2.uploader.upload(img.url, options).then(async (result) => {
+    await User.findByIdAndUpdate(req.user.id, { photo: result.url });
+  });
+
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json([user]);
 });
 
 exports.getUser = factory.getOne(User);

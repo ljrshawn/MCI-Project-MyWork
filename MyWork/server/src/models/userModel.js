@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
-    default: "default-profile-picture.png",
+    default: `${process.env.DEFAULT_PROFILE}`,
   },
   role: {
     type: String,

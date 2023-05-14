@@ -15,6 +15,7 @@ const manageRouter = require("./src/routes/manageRoutes");
 const recordRouter = require("./src/routes/recordRoutes");
 const teamRouter = require("./src/routes/teamRoutes");
 const stuRecordRouter = require("./src/routes/stuRecordRouters");
+const profileRouter = require("./src/routes/profileRouter");
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use(
 
 // 2) ROUTES
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/profile", profileRouter);
 app.use("/api/v1/manage", manageRouter);
 app.use("/api/v1/records", recordRouter);
 app.use("/api/v1/stu_records", stuRecordRouter);

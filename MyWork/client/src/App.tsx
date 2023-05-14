@@ -12,6 +12,7 @@ import {
 
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import dataProvider from "@pankod/refine-simple-rest";
 import routerProvider from "@pankod/refine-react-router-v6";
@@ -26,6 +27,7 @@ import {
   StudentRec,
   TeacherMan,
   Nodata,
+  Profiles,
 } from "pages";
 import { AuthPage } from "../src/pages/AuthPages";
 import { ActivePage, EmailSend } from "pages/AuthPages/components";
@@ -63,6 +65,11 @@ const resources = () => {
         list: StudentRec,
         icon: <EventNoteIcon />,
       },
+      {
+        name: "profile",
+        list: Profiles,
+        icon: <AccountCircleIcon />,
+      },
     ];
   }
   if (role === "teacher") {
@@ -73,6 +80,11 @@ const resources = () => {
         create: TeacherMan,
         edit: TeacherMan,
         icon: <Diversity3Icon />,
+      },
+      {
+        name: "profile",
+        list: Profiles,
+        icon: <AccountCircleIcon />,
       },
     ];
   }
@@ -112,13 +124,15 @@ function App() {
       // You can handle the login process according to your needs.
       // If the process is successful.
       if (token) {
-        const { email, firstName, role, photo } = data.user;
+        const { email, role, photo, firstName, lastName, team } = data.user;
 
         localStorage.setItem(
           "user",
           JSON.stringify({
             email,
-            name: firstName,
+            firstName,
+            lastName,
+            team,
             role,
             avatar: photo,
           })
@@ -138,13 +152,15 @@ function App() {
 
       // If the process is successful.
       if (token) {
-        const { email, firstName, role, photo } = data.user;
+        const { email, role, photo, firstName, lastName, team } = data.user;
 
         localStorage.setItem(
           "user",
           JSON.stringify({
             email,
-            name: firstName,
+            firstName,
+            lastName,
+            team,
             role,
             avatar: photo,
           })

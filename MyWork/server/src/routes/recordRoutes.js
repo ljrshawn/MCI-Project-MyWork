@@ -11,6 +11,10 @@ router
   .get(authController.protect, recordsController.getUserRecords);
 
 router
+  .route("/:id")
+  .delete(authController.protect, recordsController.deleteRecords);
+
+router
   .route("/dateDetail/")
   .get(authController.protect, recordsController.getDateDetail);
 router

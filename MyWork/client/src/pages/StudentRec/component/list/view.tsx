@@ -24,7 +24,7 @@ import {
   ConfirmationDialog,
 } from "@devexpress/dx-react-scheduler-material-ui";
 
-import { useList } from "@pankod/refine-core";
+import { useList, useDelete } from "@pankod/refine-core";
 
 import { ShowAdd } from "./showAdd";
 import { LoadingButton } from "@pankod/refine-mui";
@@ -37,6 +37,8 @@ export default function CusScheduler() {
       hasPagination: false,
     },
   });
+
+  const { mutate: deleteMutate } = useDelete();
 
   let id = -1;
   const dataIni = () => {
@@ -87,8 +89,6 @@ export default function CusScheduler() {
 
   const onCommitChanges = React.useCallback(
     (props: ChangeSet) => {
-      console.log(props);
-
       const { added, changed, deleted } = props;
       if (added) {
         const startingAddedId = schedualData.length > 0 ? String(id + 1) : "0";
@@ -105,19 +105,16 @@ export default function CusScheduler() {
         ]);
       }
       // if (changed) {
-      //   setSchedualData(
-      //     schedualData.map((appointment: AppointmentModel) =>
-      //       appointment.id && changed[appointment.id]
-      //         ? { ...appointment, ...changed[appointment.id] }
-      //         : appointment
-      //     )
-      //   );
       // }
-      // if (deleted !== undefined) {
-      //   setSchedualData(
-      //     schedualData.filter((appointment) => appointment.id !== deleted)
-      //   );
-      // }
+      if (deleted !== undefined) {
+        deleteMutate({
+          resource: "records",
+          id: deleted,
+        });
+        setSchedualData(
+          schedualData.filter((appointment) => appointment.id !== deleted)
+        );
+      }
     },
     [schedualData]
   );
@@ -261,7 +258,7 @@ export default function CusScheduler() {
           <Appointments />
 
           <AppointmentTooltip
-            showOpenButton
+            // showOpenButton
             showDeleteButton
             contentComponent={contentComponent}
             headerComponent={headerComponent}

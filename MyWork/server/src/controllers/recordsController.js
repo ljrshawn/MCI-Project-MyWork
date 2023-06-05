@@ -242,3 +242,24 @@ exports.getDateDetail = catchAsync(async (req, res, next) => {
   const records = await Promise.all(promises);
   res.status(200).json(records);
 });
+
+exports.deleteRecords = catchAsync(async (req, res, next) => {
+  const { hour } = await Record.findById(req.params.id);
+  await Record.findByIdAndDelete(req.params.id);
+
+  const user = await User.findById(req.user.id);
+  let userRecords = user.records;
+
+  userRecords = userRecords.filter(
+    (record) => record.detail.toString() !== req.params.id
+  );
+
+  const hours = user.hours - hour;
+
+  await user.updateOne({
+    hours: hours,
+    records: userRecords,
+  });
+
+  res.status(200).json({ status: "success" });
+});

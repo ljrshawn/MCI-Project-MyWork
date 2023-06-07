@@ -245,6 +245,7 @@ exports.getDateDetail = catchAsync(async (req, res, next) => {
 
 exports.deleteRecords = catchAsync(async (req, res, next) => {
   const { hour } = await Record.findById(req.params.id);
+
   await Record.findByIdAndDelete(req.params.id);
 
   const user = await User.findById(req.user.id);

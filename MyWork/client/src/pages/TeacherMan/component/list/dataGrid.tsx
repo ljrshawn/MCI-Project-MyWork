@@ -19,7 +19,7 @@ import { useForm, Controller } from "@pankod/refine-react-hook-form";
 
 import { useDelete, useUpdate } from "@pankod/refine-core";
 
-export default function DataGridCus(fresh: any) {
+export default function DataGridCus() {
   const { dataGridProps } = useDataGrid();
 
   const columns = React.useMemo<GridColumns<any>>(

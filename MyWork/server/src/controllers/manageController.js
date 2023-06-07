@@ -7,6 +7,15 @@ const Email = require("../utils/email");
 const userController = require("./userController");
 const APIFeatures = require("../utils/APIFeatures");
 
+const queue = [];
+
+const sendNextEmail = () => {
+  if (queue.length !== 0) {
+    const { user, activeUrl } = queue.shift();
+    new Email(user, activeUrl).sendActive();
+  }
+};
+
 const importSend = async (user, statusCode, req, res, next) => {
   const createToken = user.createPasswordActiveToken();
   await user.save({ validateBeforeSave: false });
@@ -16,6 +25,8 @@ const importSend = async (user, statusCode, req, res, next) => {
 
     // Send active email
     // await new Email(user, activeUrl).sendActive();
+    queue.push({ user, activeUrl });
+    setTimeout(sendNextEmail, queue.length * 5000);
 
     res.status(statusCode).json({
       status: "success",

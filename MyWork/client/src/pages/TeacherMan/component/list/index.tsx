@@ -1,14 +1,12 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { List, ImportButton, RefreshButton } from "@pankod/refine-mui";
+import { List, ImportButton } from "@pankod/refine-mui";
 import { useImport } from "@pankod/refine-core";
 
 import { CustomButton } from "../../../component/button/newPageButton";
 import DataGridCus from "./dataGrid";
 
 export const TecManList = () => {
-  let needFresh = false;
-
   interface IPostFile {
     Emplid: string;
     "Last Name": string;
@@ -23,6 +21,9 @@ export const TecManList = () => {
         firstName: item["First Names"],
         lastName: item["Last Name"],
       };
+    },
+    onFinish: () => {
+      window.location.reload();
     },
   });
 
@@ -46,7 +47,7 @@ export const TecManList = () => {
         },
       }}
     >
-      <DataGridCus fresh={needFresh} />
+      <DataGridCus />
     </List>
   );
 };

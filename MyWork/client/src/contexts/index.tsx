@@ -21,10 +21,10 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
 }) => {
   const colorModeFromLocalStorage = localStorage.getItem("colorMode");
   const isSystemPreferenceDark = window?.matchMedia(
-    "(prefers-color-scheme: dark)"
+    "(prefers-color-scheme: light)"
   ).matches;
 
-  const systemPreference = isSystemPreferenceDark ? "dark" : "light";
+  const systemPreference = isSystemPreferenceDark ? "light" : "light";
   const [mode, setMode] = useState(
     colorModeFromLocalStorage || systemPreference
   );
@@ -35,7 +35,7 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
 
   const setColorMode = () => {
     if (mode === "light") {
-      setMode("dark");
+      setMode("light");
     } else {
       setMode("light");
     }

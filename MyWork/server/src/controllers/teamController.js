@@ -7,44 +7,55 @@ exports.getAllTeams = catchAsync(async (req, res, next) => {
   res.status(200).json(teams);
 });
 
-exports.addTeams = catchAsync(async (req, res, next) => {
-  const team = await Team.findOne({ number: req.user.team });
+const queue = [];
 
-  if (req.user.team === req.oldTeam) {
-    return res.status(200).json(team);
-  }
+const createTeam = async () => {
+  if (queue.length !== 0) {
+    const user = queue.shift();
 
-  if (req.oldTeam !== "NO TEAM" || req.user.team === "NO TEAM") {
-    const oldTeam = await Team.findOne({ number: req.oldTeam });
+    if (user.oldTeam !== "NO TEAM") {
+      const oldTeam = await Team.findOne({ number: user.oldTeam });
 
-    if (oldTeam) {
-      const { member } = oldTeam;
+      if (oldTeam) {
+        let { member } = oldTeam;
 
-      const newMember = [];
-      member.map((el) =>
-        el._id.toHexString() === req.user.id ? newMember : newMember.push(el)
-      );
-      await oldTeam.updateOne({ member: newMember });
+        member = member.filter((el) => el.toString() !== user.id);
+        if (member.length === 0) {
+          await Team.findByIdAndDelete(oldTeam.id);
+        } else {
+          await oldTeam.updateOne({ member });
+        }
+      }
     }
+    if (user.team === "NO TEAM") {
+      return;
+    }
+    const team = await Team.findOne({ number: user.team });
+    const newMember = [user];
+    if (!team) {
+      await Team.create({
+        number: user.team,
+        member: newMember,
+      });
+      return;
+      // return res.status(200).json(newTeam);
+    }
+    team.member.map((el) => newMember.push(el));
+
+    await team.updateOne({ member: newMember });
+    // res.status(200).json(team);
+  }
+};
+
+exports.addTeams = catchAsync(async (req, res, next) => {
+  // const team = await Team.findOne({ number: req.user.team });
+  if (req.user.team === req.user.oldTeam) {
+    return res.status(200).json({ status: "success" });
   }
 
-  if (req.user.team === "NO TEAM") {
-    return res.status(200).json(team);
-  }
-
-  const newMember = [req.user];
-  if (!team) {
-    const newTeam = await Team.create({
-      number: req.user.team,
-      member: newMember,
-    });
-
-    return res.status(200).json(newTeam);
-  }
-  team.member.map((el) => newMember.push(el));
-
-  await team.updateOne({ member: newMember });
-  res.status(200).json(team);
+  queue.push(req.user);
+  setTimeout(createTeam, queue.length * 200);
+  res.status(200).json({ status: "success" });
 });
 
 exports.getAllTeamsRecords = catchAsync(async (req, res, next) => {

@@ -45,7 +45,7 @@ export default function DataGridCus() {
         width: 100,
       },
       {
-        field: "totalHour",
+        field: "hours",
         headerName: "Total Hour",
         width: 150,
       },

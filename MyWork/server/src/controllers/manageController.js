@@ -3,6 +3,8 @@ const generator = require("generate-password");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const User = require("../models/userModel");
+const Team = require("../models/teamModel");
+const Record = require("../models/recordModel");
 const Email = require("../utils/email");
 const userController = require("./userController");
 const APIFeatures = require("../utils/APIFeatures");
@@ -120,9 +122,26 @@ exports.getAllStudents = catchAsync(async (req, res, next) => {
   res.status(200).json(query);
 });
 
-exports.deleteUser = (req, res, next) => {
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (user.team !== "NO TEAM") {
+    const team = await Team.findOne({ number: user.team });
+    const member = team.member.filter((el) => el.toString() !== req.params.id);
+    if (member.length === 0) {
+      await Team.findByIdAndDelete(team.id);
+    } else {
+      await Team.findByIdAndUpdate(team.id, { member });
+    }
+  }
+
+  if (user.records.length !== 0) {
+    user.records.map(async (record) => {
+      await Record.findByIdAndDelete(record.detail.toString());
+    });
+  }
   userController.deleteUser(req, res, next);
-};
+});
 
 exports.getStudents = catchAsync(async (req, res, next) => {
   const user = await User.findById(req.params.id);
@@ -151,11 +170,10 @@ exports.updateStudents = catchAsync(async (req, res, next) => {
   const { team } = await User.findById(req.params.id);
 
   const filteredBody = filterObj(req.body, "team", "tag");
-  console.log(req.body);
   // console.log(filteredBody);
   await User.findByIdAndUpdate(req.params.id, filteredBody);
 
   req.user = await User.findById(req.params.id);
-  req.oldTeam = team;
+  req.user.oldTeam = team;
   next();
 });

@@ -63,7 +63,11 @@ export default function CusScheduler() {
     []
   );
 
-  if (data !== undefined && schedualData.length === 0) {
+  if (
+    data !== undefined &&
+    data?.data.length !== 0 &&
+    schedualData.length === 0
+  ) {
     setSchedualData(dataIni());
   }
 

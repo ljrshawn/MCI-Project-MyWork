@@ -59,7 +59,7 @@ exports.addTeams = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllTeamsRecords = catchAsync(async (req, res, next) => {
-  const teams = await Team.find();
+  const teams = await Team.find().sort("number");
 
   let users = [];
   if (teams) {

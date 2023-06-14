@@ -25,7 +25,7 @@ class APIFeatures {
         sortBy = "-";
       }
       sortBy += this.queryString._sort;
-      console.log(sortBy);
+      // console.log(sortBy);
       this.query = this.query.sort(sortBy);
     }
 
